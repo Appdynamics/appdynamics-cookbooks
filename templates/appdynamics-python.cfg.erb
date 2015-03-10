@@ -1,0 +1,31 @@
+[agent]
+app = <%= @app_name %>
+tier = <%= @tier_name %>
+node = <%= @node_name %>
+
+[controller]
+host = <%= @controller_host %>
+port = <%= @controller_port %>
+<% if @controller_ssl %>
+ssl = yes
+<% end %>
+<% if @controller_user %>
+user = <%= @controller_user %>
+<% end %>
+<% if @controller_accesskey %>
+accesskey = <%= @controller_accesskey %>
+<% end %>
+
+<% if @http_proxy_host %>
+[controller:http-proxy]
+host = <%= @http_proxy_host %>
+<% if @http_proxy_port %>
+port = <%= @http_proxy_port %>
+<% end %>
+<% if @http_proxy_user %>
+user = <%= @http_proxy_user %>
+<% end %>
+<% if @http_proxy_password_file %>
+password-file = <%= @http_proxy_password_file %>
+<% end %>
+<% end %>
