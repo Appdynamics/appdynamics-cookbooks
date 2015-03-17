@@ -91,6 +91,8 @@ GEM
     hitimes (1.2.2)
     ipaddress (0.8.0)
     json (1.8.2)
+    kitchen-vagrant (0.15.0)
+      test-kitchen (~> 1.0)
     libyajl2 (1.2.0)
     method_source (0.8.2)
     mime-types (2.4.3)
@@ -224,6 +226,7 @@ PLATFORMS
 DEPENDENCIES
   berkshelf
   chefspec
+  kitchen-vagrant
   rspec
   rubocop
   test-kitchen

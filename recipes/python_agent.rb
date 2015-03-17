@@ -24,6 +24,9 @@ template node['appdynamics']['python_agent']['config_file'] do
     :http_proxy_host => node['appdynamics']['controller']['http_proxy']['host'],
     :http_proxy_port => node['appdynamics']['controller']['http_proxy']['port'],
     :http_proxy_user => node['appdynamics']['controller']['http_proxy']['user'],
-    :http_proxy_password_file => node['appdynamics']['controller']['http_proxy']['password_file']
+    :http_proxy_password_file => node['appdynamics']['controller']['http_proxy']['password_file'],
+
+    :debug => node['appdynamics']['python_agent']['debug'],
+    :dir => node['appdynamics']['python_agent']['dir']
   )
 end

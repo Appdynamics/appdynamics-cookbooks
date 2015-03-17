@@ -4,3 +4,5 @@ gem "chefspec"
 gem "rubocop"
 gem "rspec"
 gem "test-kitchen"
+gem "kitchen-vagrant"
+

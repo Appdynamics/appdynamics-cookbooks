@@ -2,6 +2,9 @@
 app = <%= @app_name %>
 tier = <%= @tier_name %>
 node = <%= @node_name %>
+<% if @dir -%>
+dir = <%= @dir %>
+<% end -%>
 
 [controller]
 host = <%= @controller_host %>
@@ -27,5 +30,11 @@ user = <%= @http_proxy_user %>
 <% end %>
 <% if @http_proxy_password_file %>
 password-file = <%= @http_proxy_password_file %>
-<% end %>
-<% end %>
+<% end -%>
+<% end -%>
+
+<% if @debug %>
+[log]
+level = DEBUG
+debugging = on
+<% end -%>
