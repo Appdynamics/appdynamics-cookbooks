@@ -20,6 +20,8 @@ template node['appdynamics']['python_agent']['config_file'] do
     :controller_host => node['appdynamics']['controller']['host'],
     :controller_port => node['appdynamics']['controller']['port'],
     :controller_ssl => node['appdynamics']['controller']['ssl'],
+    :controller_user => node['appdynamics']['controller']['user'],
+    :controller_accesskey => node['appdynamics']['controller']['accesskey'],
 
     :http_proxy_host => node['appdynamics']['controller']['http_proxy']['host'],
     :http_proxy_port => node['appdynamics']['controller']['http_proxy']['port'],

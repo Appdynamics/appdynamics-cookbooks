@@ -19,7 +19,7 @@ user = <%= @controller_user %>
 accesskey = <%= @controller_accesskey %>
 <% end %>
 
-<% if @http_proxy_host %>
+<% if @http_proxy_host -%>
 [controller:http-proxy]
 host = <%= @http_proxy_host %>
 <% if @http_proxy_port %>
@@ -36,5 +36,5 @@ password-file = <%= @http_proxy_password_file %>
 <% if @debug %>
 [log]
 level = DEBUG
-debugging = on
+debugging = yes
 <% end -%>
