@@ -3,39 +3,42 @@ require 'spec_helper'
 describe 'appdynamics::python_agent' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new do |node|
-      node.set['appdynamics']['app_name'] = 'app-name'
-      node.set['appdynamics']['tier_name'] = 'tier-name'
-      node.set['appdynamics']['node_name'] = 'node-name'
+      appd = node.set['appdynamics']
+      appd['app_name'] = 'app-name'
+      appd['tier_name'] = 'tier-name'
+      appd['node_name'] = 'node-name'
 
-      node.set['appdynamics']['controller']['host'] = 'controller-host'
-      node.set['appdynamics']['controller']['port'] = 1234
-    end
+      appd['controller']['host'] = 'controller-host'
+      appd['controller']['port'] = 1234
+    end.converge(described_recipe)
   end
 
   it 'pip installs latest appdynamics' do
-    expect(chef_run.converge(described_recipe)).to install_python_pip('appdynamics')
+    expect(chef_run).to install_python_pip('appdynamics')
   end
 
   it 'creates a minimal appdynamics-python.cfg' do
-    expect(chef_run.converge(described_recipe)).to render_file(
-      "#{chef_run.node['appdynamics']['python_agent']['config_file']}").
-      with_content(File.read(fixture_file('python_agent_minimal.cfg')))
+    appd = chef_run.node.set['appdynamics']
+    expect(chef_run).to render_file(appd['python_agent']['config_file'])
+      .with_content(File.read(fixture_file('python_agent_minimal.cfg')))
   end
 
   it 'creates a full appdynamics-python.cfg' do
-    chef_run.node.set['appdynamics']['controller']['ssl'] = false
-    chef_run.node.set['appdynamics']['controller']['user'] = 'controller-user'
-    chef_run.node.set['appdynamics']['controller']['accesskey'] = 'controller-accesskey'
-    chef_run.node.set['appdynamics']['controller']['http_proxy']['host'] = 'proxy-host'
-    chef_run.node.set['appdynamics']['controller']['http_proxy']['port'] = 2345
-    chef_run.node.set['appdynamics']['controller']['http_proxy']['user'] = 'proxy-user'
-    chef_run.node.set['appdynamics']['controller']['http_proxy']['password_file'] = 'proxy-password-file'
+    appd = chef_run.node.set['appdynamics']
+    appd['controller']['ssl'] = false
+    appd['controller']['user'] = 'controller-user'
+    appd['controller']['accesskey'] = 'controller-accesskey'
+    appd['controller']['http_proxy']['host'] = 'proxy-host'
+    appd['controller']['http_proxy']['port'] = 2345
+    appd['controller']['http_proxy']['user'] = 'proxy-user'
+    appd['controller']['http_proxy']['password_file'] = 'proxy-password-file'
 
-    chef_run.node.set['appdynamics']['python_agent']['debug'] = true
-    chef_run.node.set['appdynamics']['python_agent']['dir'] = '/some/path'
+    appd['python_agent']['debug'] = true
+    appd['python_agent']['dir'] = '/some/path'
 
-    expect(chef_run.converge(described_recipe)).to render_file(
-      "#{chef_run.node['appdynamics']['python_agent']['config_file']}").
-      with_content(File.read(fixture_file('python_agent_full.cfg')))
+    chef_run.converge(described_recipe)
+
+    expect(chef_run).to render_file(appd['python_agent']['config_file'])
+      .with_content(File.read(fixture_file('python_agent_full.cfg')))
   end
 end

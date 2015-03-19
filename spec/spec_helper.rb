@@ -1,5 +1,6 @@
 require 'chefspec'
 require 'chefspec/berkshelf'
+require 'pathname'
 
 RSpec.configure do |config|
   config.log_level = :error

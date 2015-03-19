@@ -9,26 +9,50 @@ platforms:
   - name: centos-6.4
 
 suites:
-  - name: default
+  - name: nodejs_agent
     run_list:
-        - recipe[python::default]
-        - recipe[appdynamics::python_agent]
+      - recipe[nodejs::default]
+      - recipe[appdynamics::nodejs_agent]
     attributes:
-        appdynamics:
-            app_name: test-app
-            tier_name: test-tier
-            node_name: test-node
-            controller:
-                host: controller-host
-                port: 1234
-                ssl: true
-                user: controller-user
-                accesskey: controller-accesskey
-                http_proxy:
-                    host: http-proxy-host
-                    port: 2345
-                    user: http-proxy-user
-                    password_file: /tmp/foo/bar
-            python_agent:
-                debug: true
-                dir: '/opt/pyagent'
+      nodejs:
+        install_method: source
+      appdynamics:
+        app_name: test-app
+        tier_name: test-tier
+        node_name: test-node
+        controller:
+          host: controller-host
+          port: 1234
+          ssl: true
+          user: controller-user
+          accesskey: controller-accesskey
+          http_proxy:
+            host: http-proxy-host
+            port: 2345
+            user: http-proxy-user
+            password_file: /tmp/foo/bar
+        nodejs_agent:
+          path: /home/vagrant
+  - name: python_agent
+    run_list:
+      - recipe[python::default]
+      - recipe[appdynamics::python_agent]
+    attributes:
+      appdynamics:
+        app_name: test-app
+        tier_name: test-tier
+        node_name: test-node
+        controller:
+          host: controller-host
+          port: 1234
+          ssl: true
+          user: controller-user
+          accesskey: controller-accesskey
+          http_proxy:
+            host: http-proxy-host
+            port: 2345
+            user: http-proxy-user
+            password_file: /tmp/foo/bar
+          python_agent:
+            debug: true
+            dir: '/opt/pyagent'

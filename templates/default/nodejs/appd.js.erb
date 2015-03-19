@@ -1,0 +1,14 @@
+require("appdynamics").profile({
+  controllerHostName: '<%= @controller_host %>',
+  controllerPort: <%= @controller_port %>,
+  controllerSslEnabled: <%= @controller_ssl %>,
+  <% if @controller_user -%>
+  accountName: '<%= @controller_user %>',
+  <% end -%>
+  <% if @controller_accesskey -%>
+  accountAccessKey: '<%= @controller_acesskey %>',
+  <% end -%>
+  applicationName: '<%= @app_name %>',
+  tierName: '<%= @tier_name %>',
+  nodeName: '<%= @node_name %>'
+});
