@@ -18,8 +18,7 @@ describe 'appdynamics::python_agent' do
   end
 
   it 'creates a minimal appdynamics-python.cfg' do
-    appd = chef_run.node.set['appdynamics']
-    expect(chef_run).to render_file(appd['python_agent']['config_file'])
+    expect(chef_run).to render_file(chef_run.node['appdynamics']['python_agent']['config_file'])
       .with_content(File.read(fixture_file('python_agent_minimal.cfg')))
   end
 
@@ -38,7 +37,7 @@ describe 'appdynamics::python_agent' do
 
     chef_run.converge(described_recipe)
 
-    expect(chef_run).to render_file(appd['python_agent']['config_file'])
+    expect(chef_run).to render_file(chef_run.node['appdynamics']['python_agent']['config_file'])
       .with_content(File.read(fixture_file('python_agent_full.cfg')))
   end
 end
