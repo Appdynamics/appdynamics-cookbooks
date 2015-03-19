@@ -8,7 +8,7 @@ default['appdynamics']['controller']['ssl'] = true
 default['appdynamics']['controller']['user'] = nil
 default['appdynamics']['controller']['accesskey'] = nil
 
-default['appdynamics']['controller']['http_proxy']['host'] = nil
-default['appdynamics']['controller']['http_proxy']['port'] = nil
-default['appdynamics']['controller']['http_proxy']['user'] = nil
-default['appdynamics']['controller']['http_proxy']['password_file'] = nil
+default['appdynamics']['http_proxy']['host'] = nil
+default['appdynamics']['http_proxy']['port'] = nil
+default['appdynamics']['http_proxy']['user'] = nil
+default['appdynamics']['http_proxy']['password_file'] = nil

@@ -27,10 +27,10 @@ describe 'appdynamics::python_agent' do
     appd['controller']['ssl'] = false
     appd['controller']['user'] = 'controller-user'
     appd['controller']['accesskey'] = 'controller-accesskey'
-    appd['controller']['http_proxy']['host'] = 'proxy-host'
-    appd['controller']['http_proxy']['port'] = 2345
-    appd['controller']['http_proxy']['user'] = 'proxy-user'
-    appd['controller']['http_proxy']['password_file'] = 'proxy-password-file'
+    appd['http_proxy']['host'] = 'proxy-host'
+    appd['http_proxy']['port'] = 2345
+    appd['http_proxy']['user'] = 'proxy-user'
+    appd['http_proxy']['password_file'] = 'proxy-password-file'
 
     appd['python_agent']['debug'] = true
     appd['python_agent']['dir'] = '/some/path'

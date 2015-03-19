@@ -2,7 +2,7 @@ require 'pathname'
 
 agent = node['appdynamics']['nodejs_agent']
 controller = node['appdynamics']['controller']
-http_proxy = controller['http_proxy']
+http_proxy = node['appdynamics']['http_proxy']
 
 nodejs_npm 'appdynamics' do
   path agent['path'] if agent['path']

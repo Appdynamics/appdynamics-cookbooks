@@ -27,10 +27,10 @@ template agent['config_file'] do
     :controller_user => controller['user'],
     :controller_accesskey => controller['accesskey'],
 
-    :http_proxy_host => controller['http_proxy']['host'],
-    :http_proxy_port => controller['http_proxy']['port'],
-    :http_proxy_user => controller['http_proxy']['user'],
-    :http_proxy_password_file => controller['http_proxy']['password_file'],
+    :http_proxy_host => http_proxy['host'],
+    :http_proxy_port => http_proxy['port'],
+    :http_proxy_user => http_proxy['user'],
+    :http_proxy_password_file => http_proxy['password_file'],
 
     :debug => agent['debug'],
     :dir => agent['dir']
