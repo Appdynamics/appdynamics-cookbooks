@@ -1,8 +1,29 @@
+AllCops:
+  Include:
+    - '**/Berksfile'
+    - '**/Gemfile'
+    - '**/Rakefile'
+  Exclude:
+    - 'vendor/**/*'
+    - 'bin/*'
+
 AlignParameters:
   Enabled: false
-
-LineLength:
-  Max: 160
-
+ClassLength:
+  Enabled: false
+Documentation:
+  Enabled: false
+Encoding:
+  Enabled: false
 HashSyntax:
   EnforcedStyle: hash_rockets
+LineLength:
+  Max: 160
+MethodLength:
+  Enabled: false
+SignalException:
+  Enabled: false
+TrailingComma:
+  Enabled: false
+WordArray:
+  Enabled: false

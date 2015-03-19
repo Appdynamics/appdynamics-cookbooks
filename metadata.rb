@@ -1,4 +1,5 @@
-name "appdynamics"
-version "0.0.0"
+name 'appdynamics'
+version '0.0.0'
 
-depends "python"
+depends 'python'
+depends 'nodejs'
