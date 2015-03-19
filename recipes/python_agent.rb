@@ -13,7 +13,7 @@ template agent['config_file'] do
   cookbook agent['template']['cookbook']
   source agent['template']['source']
   owner agent['template']['user']
-  owner agent['template']['group']
+  group agent['template']['group']
   mode agent['template']['mode']
 
   variables(
