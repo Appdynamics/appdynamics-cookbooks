@@ -1,5 +1,7 @@
 # AppDynamics Cookbooks
 
+[![Build Status](https://travis-ci.org/Appdynamics/appdynamics-cookbooks.svg?branch=master)](https://travis-ci.org/Appdynamics/appdynamics-cookbooks)
+
 Cookbooks for installing AppDynamics agents.
 
 **This cookbook is a WIP. It currently only covers the Python and Node.js agents. See the issues for what we're working on.**
