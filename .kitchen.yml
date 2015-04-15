@@ -58,6 +58,7 @@ suites:
             dir: '/opt/pyagent'
   - name: machine_agent
     run_list:
+      - recipe[apt::default]
       - recipe[java::default]
       - recipe[appdynamics::machine_agent]
     attributes:
@@ -78,3 +79,20 @@ suites:
             password_file: /tmp/foo/bar
         machine_agent:
           source: http://10.0.72.177:10000/MachineAgent.zip
+  - name: java_agent
+    run_list:
+      - recipe[apt::default]
+      - recipe[appdynamics::java_agent]
+    attributes:
+      appdynamics:
+        app_name: test-app
+        tier_name: test-tier
+        node_name: test-node
+        controller:
+          host: controller-host
+          port: 1234
+          ssl: true
+          user: controller-user
+          accesskey: controller-accesskey
+        java_agent:
+          source: http://10.0.72.177:10000/JavaAppAgent.zip

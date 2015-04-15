@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<controller-info>
+    <controller-host><%= @controller_host %></controller-host>
+    <controller-port><%= @controller_port %></controller-port>
+    <controller-ssl-enabled><% if @controller_ssl %>true<% else %>false<% end %></controller-ssl-enabled>
+
+    <account-name><% if @controller_user %><%= @controller_user %><% end %></account-name>
+    <account-access-key><% if @controller_accesskey %><%= @controller_accesskey %><% end %></account-access-key>
+
+    <application-name><%= @app_name %></application-name>
+    <tier-name><%= @tier_name %></tier-name>
+    <node-name><%= @node_name %></node-name>
+</controller-info>
