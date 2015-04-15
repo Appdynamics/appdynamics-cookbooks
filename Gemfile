@@ -4,6 +4,9 @@ gem 'berkshelf'
 gem 'chefspec'
 gem 'rubocop'
 gem 'rspec'
-gem 'test-kitchen'
-gem 'kitchen-vagrant'
 gem 'foodcritic'
+
+group :dev do
+  gem 'test-kitchen'
+  gem 'kitchen-vagrant'
+end

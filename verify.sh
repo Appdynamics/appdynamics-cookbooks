@@ -26,5 +26,7 @@ report "RSpec" rspec spec
 report "Foodcritic" foodcritic --epic-fail any .
 report "Rubocop" rubocop
 
-echo "Running Kitchen ($KITCHEN_SUBCOMMAND)..."
-bundle exec kitchen $KITCHEN_SUBCOMMAND
+if [ "$KITCHEN_SUBCOMMAND" != "--no-kitchen" ]; then
+    echo "Running Kitchen ($KITCHEN_SUBCOMMAND)..."
+    bundle exec kitchen $KITCHEN_SUBCOMMAND
+fi
