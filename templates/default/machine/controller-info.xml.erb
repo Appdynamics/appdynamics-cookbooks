@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<controller-info>
+
+    <!-- This is the host name or the IP address of the AppDynamics Controller e.g. 192.168.1.22 or myhost or myhost.abc.com
+    This is the same host that you use to access the AppDynamics browser based User interface.
+    This can be overridden with the system property '-Dappdynamics.controller.hostName' -->
+    <controller-host><%= @controller_host %></controller-host>
+
+    <!-- This is the http(s) port of the AppDynamics Controller , If 'controller-ssl-enabled' below is set to true, you must
+    specify the HTTPS port of the Controller, otherwise specify the HTTP port. The default values are 8090 for HTTP and 8181 for HTTPS
+    This is the same port that you use to access the AppDynamics browser based User interface.
+    This can be overridden with the system property '-Dappdynamics.controller.port' -->
+    <controller-port><%= @controller_port %></controller-port>
+
+    <!-- This specifies if the AppDynamics agent should use SSL(HTTPS) to connect to the Controller. If you set this to true,
+    the controller port property above should be set to the HTTPs port of the Controller.
+    This can be overridden with the system property '-Dappdynamics.controller.ssl.enabled' -->
+    <controller-ssl-enabled><% if @controller_ssl %>true<% else %>false<% end %></controller-ssl-enabled>
+
+    <!-- Set this flag to 'true' to enable features required for AppDynamics Orchestration, including the following:
+    1) Enables the agent to execute tasks specified in AppDynamics Orchestration workflows.
+    2) Enables the agent to resolve the AppDynamics Controller host and port when the host
+       machine where this agent resides is created through AppDynamics Orchestration. -->
+    <enable-orchestration>false</enable-orchestration>
+
+    <!-- If the AppDynamics Controller is running in multi-tenant mode or you are using the AppDynamics SaaS Controller
+    you must specify the account name and account access key for this agent to authenticate with the controller.
+    If you are running in single-tenant mode (the default) there is no need to configure these values. -->
+    <account-name><% if @controller_user %><%= @controller_user %><% end %></account-name>
+    <account-access-key><% if @controller_accesskey %><%= @controller_accesskey %><% end %></account-access-key>
+
+    <!--  For Auto Agent Registration specify the application name, tier name,
+    and optionally, node name. If the application and/or tier does not exist
+    already it will be created. If there is already a registered app server agent
+    installed on the same host as this machine agent then Auto Agent Registration
+    is not necessary for this machine agent. -->
+    <application-name><%= @app_name %></application-name>
+    <tier-name><%= @tier_name %></tier-name>
+    <node-name><%= @node_name %></node-name>
+
+    <!-- Change to 'true' only under special circumstances where this agent has been moved to a new application and/or tier
+    from the UI but you want to override that move by specifying a new application name and/or tier name in the agent configuration.
+    If there is already a registered app server agent installed on the same host as this machine agent then this override DOES not work.
+    If you want to override the UI in this case, you must force the agent registration change from the app server agent configuration. -->
+    <force-agent-registration>false</force-agent-registration>
+
+</controller-info>

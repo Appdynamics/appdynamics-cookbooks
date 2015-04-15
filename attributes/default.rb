@@ -12,3 +12,5 @@ default['appdynamics']['http_proxy']['host'] = nil
 default['appdynamics']['http_proxy']['port'] = nil
 default['appdynamics']['http_proxy']['user'] = nil
 default['appdynamics']['http_proxy']['password_file'] = nil
+
+default['appdynamics']['unzip_command'] = "unzip -qq"

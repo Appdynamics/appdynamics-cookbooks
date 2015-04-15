@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# <%= @init_script_name %>
+# Subsystem file for AppDynamics machine agent
+#
+# chkconfig: 2345 95 05 (1)
+# description: AppDynamics machine agent
+
+# source function library
+if [ -r /lib/lsb/init-functions ]; then
+    . /lib/lsb/init-functions
+elif [ -r /etc/rc.d/init.d/functions ]; then
+    . /etc/rc.d/init.d/functions
+elif [ -r /etc/init.d/functions ]; then
+    . /etc/init.d/functions
+fi
+
+INSTALL_DIR="<%= @install_dir %>"
+RETVAL=0
+PROG="$INSTALL_DIR/run.sh"
+
+start() {
+    echo -n $"Starting AppDynamics machine agent:"
+    "$PROG"
+    RETVAL=$?
+    echo
+}
+
+stop() {
+    echo -n $"Stopping AppDynamics machine agent:"
+    killproc "$PROG" -TERM
+    RETVAL=$?
+    echo
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|restart}"
+        RETVAL=1
+        ;;
+esac
+
+exit $RETVAL
