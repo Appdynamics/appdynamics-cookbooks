@@ -6,15 +6,17 @@ python_pip 'appdynamics' do
   virtualenv agent['virtualenv'] if agent['virtualenv']
   action agent['action']
   version agent['version'] if agent['version'] != 'latest'
+  user agent['user']
+  group agent['group']
   options '--pre' if agent['prerelease']
 end
 
 template agent['config_file'] do
   cookbook agent['template']['cookbook']
   source agent['template']['source']
-  owner agent['template']['user']
-  group agent['template']['group']
-  mode agent['template']['mode']
+  owner agent['user']
+  group agent['group']
+  mode "0600"
 
   variables(
     :app_name => node['appdynamics']['app_name'],

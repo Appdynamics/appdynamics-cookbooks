@@ -11,4 +11,3 @@ default['appdynamics']['python_agent']['debug'] = false
 
 default['appdynamics']['python_agent']['template']['cookbook'] = 'appdynamics'
 default['appdynamics']['python_agent']['template']['source'] = 'python/appdynamics.cfg.erb'
-default['appdynamics']['python_agent']['template']['mode'] = 0644
