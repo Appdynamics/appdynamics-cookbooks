@@ -1,7 +1,5 @@
 agent = node['appdynamics']['java_agent']
 controller = node['appdynamics']['controller']
-Chef::Log.info("Controlller:")
-Chef::Log.info(controller)
 agent_zip = node['appdynamics']['agent_zip']
 
 package "unzip" if node[:platform_family].include?("debian")
