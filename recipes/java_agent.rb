@@ -1,7 +1,6 @@
 agent = node['appdynamics']['java_agent']
 controller = node['appdynamics']['controller']
-
-agent_zip = "#{Chef::Config[:file_cache_path]}/AppDynamicsJavaAgent.zip"
+agent_zip = node['appdynamics']['agent_zip']
 
 package "unzip" if node[:platform_family].include?("debian")
 
@@ -42,6 +41,6 @@ template "#{agent['install_dir']}/conf/controller-info.xml" do
     :controller_port => controller['port'],
     :controller_ssl => controller['ssl'],
     :controller_user => controller['user'],
-    :controller_accesskey => controller['accesskey'],
+    :controller_accesskey => controller['access_key'],
   )
 end
