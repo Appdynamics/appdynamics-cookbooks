@@ -66,15 +66,15 @@ template "#{setup_config}" do
   source agent['template']['source']
     
   variables(
-    :app_name => node['appdynamics']['app_name'],
-	:log_file_directory => agent['logfiles_dir'],
-    :controller_host => controller['host'],
-    :controller_port => controller['port'],
-    :controller_ssl => controller['ssl'],
-    :controller_user => controller['user'],
-    :controller_accesskey => controller['accesskey'],
-	:proxy_host => proxy['host'],
-	:proxy_port => proxy['port'],
+  :app_name => node['appdynamics']['app_name'],
+  :log_file_directory => agent['logfiles_dir'],
+  :controller_host => controller['host'],
+  :controller_port => controller['port'],
+  :controller_ssl => controller['ssl'],
+  :controller_user => controller['user'],
+  :controller_accesskey => controller['accesskey'],
+  :proxy_host => proxy['host'],
+  :proxy_port => proxy['port'],
   )
 end
 
