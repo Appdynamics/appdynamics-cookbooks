@@ -8,7 +8,7 @@ Cookbooks for installing AppDynamics agents.
 
 Learn more about AppDynamics at:
 
-* http://www.appdynamics.com/ (and check out the handsome devil next to the "Act" bubble in the photo)
+* http://www.appdynamics.com/ (and check out the weird looking dude next to the "Act" bubble in the photo)
 * https://docs.appdynamics.com/display/PRO40/Getting+Started
 * https://docs.appdynamics.com/display/PRO40/Install+and+Administer+Agents
 
