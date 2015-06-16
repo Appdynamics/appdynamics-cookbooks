@@ -60,6 +60,13 @@ powershell_script 'check_complus' do
 only_if {'(Get-Service COMSysApp).status' != "Running" }
 end
 
+# Check whether IIS 7.0+ is installed
+# Enable IIS Health Monitoring for the Machine snapshots to return IIS App Pool data
+powershell_script 'check_IIS' do
+	code 'Install-WindowsFeature Web-Request-Monitor'
+	only_if '[Single]::Parse((get-itemproperty HKLM:\SOFTWARE\Microsoft\InetStp\  | select versionstring).VersionString.Substring(8)) -ge 7.0'
+end
+
 # Updating the setup config file based on the parameters
 template "#{setup_config}" do
   cookbook agent['template']['cookbook']
