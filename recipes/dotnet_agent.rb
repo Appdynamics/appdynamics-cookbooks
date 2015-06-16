@@ -78,9 +78,18 @@ template "#{setup_config}" do
   )
 end
 
-
 # Installing the agent 
-execute "install #{agent_msi}" do
-  command "msiexec /i #{agent_msi} /q /norestart /lv #{install_log_file} AD_SetupFile=#{setup_config} INSTALLDIR=\"#{install_directory}\""
-only_if { File.exists?(agent_msi) }
+windows_package 'Install AppD .NET Agent' do
+  source agent_msi
+  options "/lv #{install_log_file} AD_SetupFile=#{setup_config} INSTALLDIR=\"#{install_directory}\""
+  installer_type :msi
+ only_if { File.exists?(agent_msi) }  
 end
+
+
+## Installing the agent -- No Dependency on windows cookbook
+## The below code block can also be used for installing the agent
+# execute "install #{agent_msi}" do
+#   command "msiexec /i #{agent_msi} /q /norestart /lv #{install_log_file} AD_SetupFile=#{setup_config} INSTALLDIR=\"#{install_directory}\""
+#  only_if { File.exists?(agent_msi) }
+# end
