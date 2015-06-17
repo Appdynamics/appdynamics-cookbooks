@@ -35,33 +35,60 @@ remote_file "#{agent_msi}" do
   checksum agent['checksum']
 end
 
-# Environment Validation
-# Comment if you're installing 4.1 -- Matt Jensen to confirm with Sanjay
+#Environment Validation
+#####################################################################################################
+# Environment Validation using Powershell                                                           #
+#####################################################################################################
+# # Comment if you're installing 4.1
+# #Check whether the MSDTC service is up and running 
+# #if it is not running, start the service
+# powershell_script 'check_MSDTC' do
+    # code 'Start-Service MSDTC'
+	# only_if {'(Get-Service MSDTC).status' != "Running" }
+# end
+
+# # Comment if you're installing 4.1 -- Matt Jensen to confirm with Sanjay
+# #Check whether the WMI service is up and running 
+# #if it is not running, start the service
+# powershell_script 'check_WMI' do
+    # code 'Start-Service Winmgmt'
+	# only_if {'(Get-Service Winmgmt).status' != "Running" }
+# end
+
+# # Comment if you're installing 4.1
+# # Check whether the COM+ service is up and running
+# # if it is not running, start the service
+# powershell_script 'check_complus' do
+	# code 'Start-Service COMSysApp'
+	# only_if {'(Get-Service COMSysApp).status' != "Running" }
+# end
+#####################################################################################################
+
+# Comment if you're installing 4.1
 # Check whether the MSDTC service is up and running 
 # if it is not running, start the service
-powershell_script 'check_MSDTC' do
-  code 'Start-Service MSDTC'
-only_if {'(Get-Service MSDTC).status' != "Running" }
+service "MSDTC" do
+  action [ :enable, :start ]
 end
 
 # Comment if you're installing 4.1 -- Matt Jensen to confirm with Sanjay
 # Check whether the WMI service is up and running 
 # if it is not running, start the service
-powershell_script 'check_WMI' do
-  code 'Start-Service Winmgmt'
-only_if {'(Get-Service Winmgmt).status' != "Running" }
+service "Winmgmt" do
+  action [ :enable, :start ]
 end
 
-# Comment if you're installing 4.1 -- Matt Jensen to confirm with Sanjay
+# Comment if you're installing 4.1
 # Check whether the COM+ service is up and running
 # if it is not running, start the service
-powershell_script 'check_complus' do
-  code 'Start-Service COMSysApp'
-only_if {'(Get-Service COMSysApp).status' != "Running" }
+service "COMSysApp" do
+  action [ :enable, :start ]
 end
+
 
 # Check whether IIS 7.0+ is installed
 # Enable IIS Health Monitoring for the Machine snapshots to return IIS App Pool data
+# There is no equivalent available in chef to get the IIS version - so completely using powershell scripts
 powershell_script 'check_IIS' do
 	code 'Install-WindowsFeature Web-Request-Monitor'
 	only_if '[Single]::Parse((get-itemproperty HKLM:\SOFTWARE\Microsoft\InetStp\  | select versionstring).VersionString.Substring(8)) -ge 7.0'
