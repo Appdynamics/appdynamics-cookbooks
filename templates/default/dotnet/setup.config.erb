@@ -1,0 +1,22 @@
+<winston>
+  <logFileDirectory directory="<%= @log_file_directory %>" />
+  <logFileFolderAccessPermissions defaultAccountsEnabled="false">
+    <account name="NT AUTHORITY\LOCAL SERVICE" displayName="LOCAL SERVICE" />
+    <account name="NT AUTHORITY\SYSTEM" displayName="SYSTEM" />
+    <account name="NT AUTHORITY\NETWORK SERVICE" displayName="NETWORK SERVICE" />
+    <account name="IIS_IUSRS" displayName="ApplicationPool Identity" />
+  </logFileFolderAccessPermissions>
+  <appdynamics-agent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <controller host="<%= @controller_host %>" port="<%= @controller_port %>" ssl="<% if @controller_ssl %>true<% else %>false<% end %>">
+      <application name="<%= @app_name %>" />
+	  <% unless @controller_user.nil? %><account name="<%= @controller_user %>" password="<%= @controller_accesskey %>" /><% end %>
+	  <% unless @proxy_host.nil? %><proxy host="<%= @proxy_host %>" port="<%= @proxy_port %>" enabled="true"/><% end %>
+    </controller>
+	<machine-agent />
+    <app-agents>
+      <IIS>
+        <automatic enabled="true" />
+      </IIS>
+    </app-agents>
+  </appdynamics-agent>
+</winston>
