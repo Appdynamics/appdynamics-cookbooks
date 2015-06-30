@@ -4,7 +4,7 @@
 
 Cookbooks for installing AppDynamics agents.
 
-**This cookbook is a WIP. It currently only covers the Python and Node.js agents. See the issues for what we're working on.**
+**This cookbook is a WIP. See the issues for what we're working on.**
 
 Learn more about AppDynamics at:
 
@@ -17,6 +17,9 @@ Learn more about AppDynamics at:
 * Chef >= 0.10.0
 * python cookbook
 * nodejs cookbook
+* windows cookbook
+* java cookbook
+* apt cookbook
 * Python and Node.JS recipes are tested on Ubuntu and CentOS
 
 ## Attributes
@@ -25,6 +28,8 @@ For more information about these settings, please refer to the AppDynamics docum
 
 * [Install the Node.js Agent - Advanced Instructions](https://docs.appdynamics.com/display/PRO40/Install+the+Node.js+Agent#InstalltheNode.jsAgent-AdvancedInstructions)
 * [Python Agent Settings](https://docs.appdynamics.com/display/PRO40/Python+Agent+Settings+-+Beta)
+* [Java Agent Settings](https://docs.appdynamics.com/display/PRO40/Install+the+Java+Agent)
+* [.NET Agent Settings](https://docs.appdynamics.com/display/PRO40/Install+the+.NET+Agent)
 
 ### Default Attributes
 
@@ -96,3 +101,51 @@ default_attributes (
 **Step 2.** Add `recipe[appdynamics::python_agent]` to your run list.
 
 **Step 3.** Update your recipes that deploy your application to enable the Python agent in your application. See [Instrument Python Applications](https://docs.appdynamics.com/display/PRO40/Instrument+Python+Applications+-+Beta#InstrumentPythonApplications-Beta-InstrumenttheApplication).
+
+### .Net Agent Configuration Attributes
+
+The `dotnet_agent` recipe has some additional attributes you may set:
+
+* `node['appdynamics']['dotnet_agent']['version']` - The version of the .net agent you wish to use. defaults to `4.0.7.0`
+* `node['appdynamics']['dotnet_agent']['checksum']` -  The SHA-256 checksum of the file. Use to prevent a file from being re-downloaded. When the local file matches the checksum, the chef-client will not download it. Defaults to `1c73e49e0b24df53f048c814da992c2fdade5fc7c47aeb1aaccd4726d9a4d6f7` which is the checksum for the 4.0.7.0 64 bit agent.
+* `node['appdynamics']['dotnet_agent']['install_dir']` - Set to the path you want the agent to be installed at, it defaults to `C:\Program Files\Appdynamics`.
+* `node['appdynamics']['dotnet_agent']['source']` - Set to url for downloading the agent from. 
+* `node['appdynamics']['dotnet_agent']['logfiles_dir']` - Set the logfile directory. defaults to `C:\DotNetAgent\Logs`. 
+
+## Usage
+
+### Instrumenting a .Net IIS Application
+
+**Step 1.** Set the following node attributes (documented above):
+
+* `node['appdynamics']['app_name']`
+* `node['appdynamics']['controller']['host']`
+* `node['appdynamics']['controller']['port']`
+* `node['appdynamics']['controller']['user']`
+* `node['appdynamics']['controller']['accesskey']`
+* `node['appdynamics']['dotnet_agent']['version']`
+* `node['appdynamics']['dotnet_agent']['checksum']`
+* `node['appdynamics']['dotnet_agent']['source']`
+
+For example, you might set these in a Chef role file:
+
+```ruby
+default_attributes (
+  'appdynamics' => {
+    'app_name' => 'my app',
+    'controller' => {
+      'host' => 'my-controller',
+      'port' => '8181',
+      'ssl' => true,
+      'user' => 'someuser',
+      'accesskey' => 'supersecret',
+    },
+    'dotnet_agent' => {
+      'version' => '4.0.7.0',
+      'checksum' => '1c73e49e0b24df53f048c814da992c2fdade5fc7c47aeb1aaccd4726d9a4d6f7',
+      'source' => 'http://something/AppdynamicsInstallers/'
+    }
+  }
+)
+
+**Step 2.** Add `recipe[appdynamics::dotnet_agent]` to your run list.

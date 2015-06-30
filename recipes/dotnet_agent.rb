@@ -17,11 +17,11 @@ when /32/
   agent_msi = "#{agent_msi_path}\\dotNetAgentSetup.msi"
   source_path = "#{agent['source']}/dotNetAgentSetup.msi"
 else
-  raise "Unsupported OS architecture"
+  raise 'Unsupported OS architecture'
 end
 
 # Download the msi file from source
-remote_file "#{agent_msi}" do
+remote_file '#{agent_msi}' do
   source source_path
   checksum agent['checksum']
 end
@@ -29,32 +29,36 @@ end
 # Environment Validation
 
 # MSDTC Service
-service "MSDTC" do
-  action [ :enable, :start ]
+service 'MSDTC' do
+  action [:enable, :start]
 end
 
 # WMI Service
-service "Winmgmt" do
-  action [ :enable, :start ]
+service 'Winmgmt' do
+  action [:enable, :start]
 end
 
-if agent['version'] < '4.1'
-  # COM+ Service is not required in 4.1+
-  service "COMSysApp" do
-    action [ :enable, :start ]
-  end
+# COM+ Service is not required in 4.1+
+service 'COMSysApp' do
+  action [:enable, :start]
+  only_if { agent['version'] < '4.1.0.0' }
 end
 
 # Check whether IIS 7.0+ is installed
 # Enable IIS Health Monitoring for the Machine snapshots to return IIS App Pool data
 # There is no equivalent available in chef to get the IIS version - so completely using powershell scripts
 powershell_script 'check_IIS' do
-	code 'Install-WindowsFeature Web-Request-Monitor'
-	only_if '[Single]::Parse((get-itemproperty HKLM:\SOFTWARE\Microsoft\InetStp\  | select versionstring).VersionString.Substring(8)) -ge 7.0'
+  code 'Install-WindowsFeature Web-Request-Monitor'
+  only_if '[Single]::Parse((get-itemproperty HKLM:\SOFTWARE\Microsoft\InetStp\  | select versionstring).VersionString.Substring(8)) -ge 7.0'
+end
+
+# create directory if it doesn't exist
+directory 'temp' do
+  path agent_msi_path
 end
 
 # Updating the setup config file based on the parameters
-template "#{setup_config}" do
+template '#{setup_config}' do
   cookbook agent['template']['cookbook']
   source agent['template']['source']
 
@@ -72,9 +76,9 @@ template "#{setup_config}" do
 end
 
 # Installing the agent
-windows_package 'Install AppD .NET Agent' do
+windows_package 'AppD .NET Agent' do
   source agent_msi
   options "/lv #{install_log_file} AD_SetupFile=#{setup_config} INSTALLDIR=\"#{install_directory}\""
   installer_type :msi
-  only_if { File.exists?(agent_msi) }
+  only_if { File.exist?(agent_msi) }
 end
