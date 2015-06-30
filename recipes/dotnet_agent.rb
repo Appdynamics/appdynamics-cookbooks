@@ -71,7 +71,7 @@ template '#{setup_config}' do
     :controller_user => controller['user'],
     :controller_accesskey => controller['accesskey'],
     :proxy_host => proxy['host'],
-    :proxy_port => proxy['port'],
+    :proxy_port => proxy['port']
   )
 end
 

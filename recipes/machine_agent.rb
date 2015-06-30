@@ -30,7 +30,7 @@ template "#{agent['install_dir']}/run.sh" do
   variables(
     :java => agent['java'],
     :java_params => agent['java_params'],
-    :install_dir => agent['install_dir'],
+    :install_dir => agent['install_dir']
   )
 end
 
@@ -42,7 +42,7 @@ end
 template agent['init_script'] do
   source 'machine/init.d.erb'
   variables(
-    :install_dir => agent['install_dir'],
+    :install_dir => agent['install_dir']
   )
   owner agent['owner']
   group agent['group']
@@ -70,7 +70,7 @@ template "#{agent['install_dir']}/conf/controller-info.xml" do
     :http_proxy_host => http_proxy['host'],
     :http_proxy_port => http_proxy['port'],
     :http_proxy_user => http_proxy['user'],
-    :http_proxy_password_file => http_proxy['password_file'],
+    :http_proxy_password_file => http_proxy['password_file']
   )
 end
 

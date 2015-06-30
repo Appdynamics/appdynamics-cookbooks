@@ -41,6 +41,6 @@ template "#{agent['install_dir']}/conf/controller-info.xml" do
     :controller_port => controller['port'],
     :controller_ssl => controller['ssl'],
     :controller_user => controller['user'],
-    :controller_accesskey => controller['accesskey'],
+    :controller_accesskey => controller['accesskey']
   )
 end
