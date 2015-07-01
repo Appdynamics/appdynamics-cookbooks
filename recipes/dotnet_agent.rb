@@ -20,8 +20,13 @@ else
   raise 'Unsupported OS architecture'
 end
 
+# create directory if it doesn't exist
+directory 'temp' do
+  path agent_msi_path
+end
+
 # Download the msi file from source
-remote_file '#{agent_msi}' do
+remote_file agent_msi do
   source source_path
   checksum agent['checksum']
 end
@@ -52,13 +57,8 @@ powershell_script 'check_IIS' do
   only_if '[Single]::Parse((get-itemproperty HKLM:\SOFTWARE\Microsoft\InetStp\  | select versionstring).VersionString.Substring(8)) -ge 7.0'
 end
 
-# create directory if it doesn't exist
-directory 'temp' do
-  path agent_msi_path
-end
-
 # Updating the setup config file based on the parameters
-template '#{setup_config}' do
+template setup_config do
   cookbook agent['template']['cookbook']
   source agent['template']['source']
 

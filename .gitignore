@@ -10,7 +10,6 @@ bin/*
 vendor/
 
 Berksfile.lock
-GemFile.lock
 coverage/*
 
 # Mac crap
