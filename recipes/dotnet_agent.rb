@@ -68,6 +68,7 @@ template "#{setup_config}" do
     :controller_accesskey => controller['accesskey'],
     :proxy_host => proxy['host'],
     :proxy_port => proxy['port'],
+	:standalone_apps => agent['standalone_apps']
   )
 end
 
