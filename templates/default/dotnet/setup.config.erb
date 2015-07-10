@@ -17,6 +17,15 @@
       <IIS>
         <automatic enabled="true" />
       </IIS>
+	  <% unless @standalone_apps.nil? %> 
+	   <standalone-applications> 
+	    <% @standalone_apps.split(',').each { |app_name| puts %>
+	     <standalone-application executable="<%= app_name%>">
+           <tier name="<%= app_name%>" />
+		 </standalone-application>
+		<%}%>
+	   </standalone-applications>
+	  <% end %>
     </app-agents>
   </appdynamics-agent>
 </winston>
