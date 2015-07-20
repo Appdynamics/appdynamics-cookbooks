@@ -3,7 +3,6 @@ controller = node['appdynamics']['controller']
 proxy = node['appdynamics']['http_proxy']
 install_directory = agent['install_dir']
 system_directory = node['kernel']['os_info']['windows_directory']
-
 agent_msi_path = "#{system_directory}\\Temp"
 setup_config = "#{agent_msi_path}\\setup.xml"
 install_log_file = "#{agent_msi_path}\\DotnetAgentInstall.log"
@@ -68,6 +67,7 @@ template "#{setup_config}" do
     :controller_accesskey => controller['accesskey'],
     :proxy_host => proxy['host'],
     :proxy_port => proxy['port'],
+	:standalone_apps => agent['standalone_apps']
   )
 end
 
@@ -77,4 +77,15 @@ windows_package 'Install AppD .NET Agent' do
   options "/lv #{install_log_file} AD_SetupFile=#{setup_config} INSTALLDIR=\"#{install_directory}\""
   installer_type :msi
   only_if { File.exists?(agent_msi) }
+end
+
+Restart_Windows_Service = agent['Restart_Windows_Service'] + ',' + agent['standalone_apps'].keys.join(',')
+
+# Restart Appdynamics Agent Coordinator & Windows Services that are instrumented. 
+# This has to be a separate variable because we are using standalone instrumentation for instrumenting Windows Services
+powershell_script 'Restart Windows Services' do
+  code <<-EOH
+  Restart-Service #{Restart_Windows_Service}
+  EOH
+  not_if  Restart_Windows_Service.nil?
 end
