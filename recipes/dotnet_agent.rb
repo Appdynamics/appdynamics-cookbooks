@@ -67,7 +67,8 @@ template "#{setup_config}" do
     :controller_accesskey => controller['accesskey'],
     :proxy_host => proxy['host'],
     :proxy_port => proxy['port'],
-	:standalone_apps => agent['standalone_apps']
+	:standalone_apps => agent['standalone_apps'],
+	:instrument_iis => agent['instrument_iis']
   )
 end
 
@@ -82,10 +83,17 @@ end
 Restart_Windows_Service = agent['Restart_Windows_Service'] + ',' + agent['standalone_apps'].keys.join(',')
 
 # Restart Appdynamics Agent Coordinator & Windows Services that are instrumented. 
-# This has to be a separate variable because we are using standalone instrumentation for instrumenting Windows Services
+# There is an additional variable available for adding un-instrumented windows services for restarting. We're using that to restart the Appdynamics Agent coordinator
 powershell_script 'Restart Windows Services' do
   code <<-EOH
   Restart-Service #{Restart_Windows_Service}
   EOH
   not_if  Restart_Windows_Service.nil?
+end
+
+powershell_script 'Restart IIS' do
+  code <<-EOH
+  IISReset
+  EOH
+  only_if  {agent['instrument_iis']==true}
 end

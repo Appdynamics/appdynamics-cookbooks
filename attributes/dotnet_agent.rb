@@ -10,4 +10,5 @@ default['appdynamics']['dotnet_agent']['standalone_apps'] = {
 'w3svc'=>{'executable'=>'b.exe','tier'=>'b Tier','commandline'=>nil,'restart'=>true},
 'msdtc'=>{'executable'=>'a.exe','tier'=>'a Tier','commandline'=>'-a -b','restart'=>true}
 } 
+default['appdynamics']['dotnet_agent']['instrument_iis'] = false
 

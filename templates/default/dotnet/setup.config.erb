@@ -15,7 +15,7 @@
 	<machine-agent />
     <app-agents>
       <IIS>
-        <automatic enabled="true" />
+        <automatic enabled="<%= @instrument_iis%>" />
       </IIS>
 	  <% unless @standalone_apps.nil? %> 
 	   <standalone-applications> 
