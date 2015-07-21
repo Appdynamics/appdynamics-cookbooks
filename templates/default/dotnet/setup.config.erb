@@ -15,8 +15,17 @@
 	<machine-agent />
     <app-agents>
       <IIS>
-        <automatic enabled="true" />
+        <automatic enabled="<%= @instrument_iis%>" />
       </IIS>
+	  <% unless @standalone_apps.nil? %> 
+	   <standalone-applications> 
+	    <% @standalone_apps.each { |app_name, app_value| puts %>
+	     <standalone-application executable="<%= app_value[:executable]%>" <% unless app_value[:commandline].nil? %>command-line="<%= app_value[:commandline]%>"<% end %>>
+           <tier name="<%= app_value[:tier]%>" />
+		 </standalone-application>
+		<%}%>
+	   </standalone-applications>
+	  <% end %>
     </app-agents>
   </appdynamics-agent>
 </winston>
