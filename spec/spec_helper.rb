@@ -9,3 +9,5 @@ end
 def fixture_file(*args)
   Pathname(__FILE__).parent.join('fixtures', *args)
 end
+
+at_exit { ChefSpec::Coverage.report! }
