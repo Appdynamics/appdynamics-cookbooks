@@ -25,14 +25,6 @@ directory 'temp' do
   path agent_msi_path
 end
 
-# Download the msi file from source
-remote_file agent_msi do
-  source source_path
-  checksum agent['checksum']
-end
-
-# Environment Validation
-
 # MSDTC Service
 service 'MSDTC' do
   action [:enable, :start]
@@ -46,22 +38,17 @@ end
 # COM+ Service is not required in 4.1+
 service 'COMSysApp' do
   action [:enable, :start]
-  only_if { agent['version'] < '4.1.0.0' }
+  only_if { agent['version'] < '4.1' }
 end
 
-# Check whether IIS 7.0+ is installed
-# Enable IIS Health Monitoring for the Machine snapshots to return IIS App Pool data
-# There is no equivalent available in chef to get the IIS version - so completely using powershell scripts
-powershell_script 'check_IIS' do
-  code 'Install-WindowsFeature Web-Request-Monitor'
-  only_if '[Single]::Parse((get-itemproperty HKLM:\SOFTWARE\Microsoft\InetStp\  | select versionstring).VersionString.Substring(8)) -ge 7.0'
+windows_feature 'IIS-RequestMonitor' do
+  action :install
 end
 
 # Updating the setup config file based on the parameters
 template setup_config do
   cookbook agent['template']['cookbook']
   source agent['template']['source']
-
   variables(
     :app_name => node['appdynamics']['app_name'],
     :log_file_directory => agent['logfiles_dir'],
@@ -75,10 +62,19 @@ template setup_config do
   )
 end
 
+# Download the msi file from source
+remote_file agent_msi do
+  source source_path
+  notifies :install, 'package[AppDynamics .NET Agent]', :immediately
+end
+
 # Installing the agent
-windows_package 'AppD .NET Agent' do
+package 'AppDynamics .NET Agent' do
   source agent_msi
-  options "/lv #{install_log_file} AD_SetupFile=#{setup_config} INSTALLDIR=\"#{install_directory}\""
-  installer_type :msi
-  only_if { File.exist?(agent_msi) }
+  options "/l*v \"#{install_log_file}\" AD_SetupFile=\"#{setup_config}\" INSTALLDIR=\"#{install_directory}\""
+end
+
+service 'AppDynamics.Agent.Coordinator_service' do
+  action [:enable, :start]
+  subscribes :restart, 'template[setup_config]', :delayed
 end
