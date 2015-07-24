@@ -1,7 +1,7 @@
 appdynamics CHANGELOG
 ========================
 
-This file is used to list changes made in each version of the rabbit_support cookbook.
+This file is used to list changes made in each version of the appdynamics cookbook.
 
 0.0.1
 -----
