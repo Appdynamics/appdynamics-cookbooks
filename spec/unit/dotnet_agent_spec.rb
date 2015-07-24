@@ -8,32 +8,23 @@ describe 'appdynamics::dotnet_agent' do
     end
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        allow(File).to receive(:exist?).and_call_original
-        allow(File).to receive(:exist?).with('c:\\windows\\Temp\\dotNetAgentSetup64.msi').and_return('true')
         node.automatic['kernel']['os_info']['windows_directory'] = 'c:\windows'
-        node.automatic['kernel']['os_info']['os_architecture'] = '64-bit'
+        node.automatic['kernel']['machine'] = 'x86_64'
         node.set['appdynamics']['dotnet_agent']['template']['cookbook'] = 'appdynamics'
         node.set['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/setup.config.erb'
-        node.set['appdynamics']['logfiles_dir'] = 'C:\DotNetAgent\Logs'
         node.set['appdynamics']['app_name'] = 'myapp'
         node.set['appdynamics']['controller']['host'] = 'appdynamics-controller.domain.com'
         node.set['appdynamics']['controller']['port'] = '443'
-        node.set['appdynamics']['controller']['ssl'] = 'true'
         node.set['appdynamics']['controller']['user'] = 'someuser'
         node.set['appdynamics']['controller']['accesskey'] = 'supersecret'
         node.set['appdynamics']['http_proxy']['host'] = 'appdynamics-proxy.domain.com'
         node.set['appdynamics']['http_proxy']['port'] = '80'
         node.set['appdynamics']['install_dir'] = 'C:\Program Files\Appdynamics'
-        node.set['appdynamics']['dotnet_agent']['source'] = 'https://packages.appdynamics.com/dotnet/latest'
       end.converge(described_recipe)
     end
     it 'creates a temp directory' do
       expect(chef_run).to create_directory('c:\\windows\\Temp')
       expect(chef_run).to_not create_directory('c:\\windows\\not_temp')
-    end
-    it 'creates a remote_file with attributes' do
-      expect(chef_run).to create_remote_file('c:\\windows\\Temp\\dotNetAgentSetup64.msi')
-      expect(chef_run).to_not create_remote_file('c:\\windows\\Temp\\dotNetAgentSetup.msi')
     end
     it 'enables MSDTC service' do
       expect(chef_run).to enable_service('MSDTC')
@@ -47,7 +38,7 @@ describe 'appdynamics::dotnet_agent' do
       expect(chef_run).to_not enable_service('COMSysApp')
     end
     it 'enables COMSysApp service' do
-      chef_run.node.set['appdynamics']['dotnet_agent']['version'] = '4.0.7.0'
+      chef_run.node.set['appdynamics']['dotnet_agent']['version'] = '4.0.8.0'
       chef_run.converge(described_recipe)
       expect(chef_run).to enable_service('COMSysApp')
       expect(chef_run).to_not enable_service('not_COMSysApp')
@@ -56,7 +47,7 @@ describe 'appdynamics::dotnet_agent' do
       expect(chef_run).to create_template('c:\\windows\\Temp\\setup.xml')
       expect(chef_run).to_not create_template('c:\\windows\\Temp\\not_setup.xml')
     end
-    it 'installs windows_feature IIS-Request-Monitor' do
+    it 'installs windows_feature IIS-RequestMonitor' do
       expect(chef_run).to install_windows_feature('IIS-RequestMonitor')
       expect(chef_run).to_not install_windows_feature('not_IIS-RequestMonitor')
     end
@@ -75,32 +66,23 @@ describe 'appdynamics::dotnet_agent' do
     end
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        allow(File).to receive(:exist?).and_call_original
-        allow(File).to receive(:exist?).with('c:\\windows\\Temp\\dotNetAgentSetup64.msi').and_return('true')
         node.automatic['kernel']['os_info']['windows_directory'] = 'c:\windows'
-        node.automatic['kernel']['os_info']['os_architecture'] = '64-bit'
+        node.automatic['kernel']['machine'] = 'x86_64'
         node.set['appdynamics']['dotnet_agent']['template']['cookbook'] = 'appdynamics'
         node.set['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/setup.config.erb'
-        node.set['appdynamics']['logfiles_dir'] = 'C:\DotNetAgent\Logs'
         node.set['appdynamics']['app_name'] = 'myapp'
         node.set['appdynamics']['controller']['host'] = 'appdynamics-controller.domain.com'
         node.set['appdynamics']['controller']['port'] = '443'
-        node.set['appdynamics']['controller']['ssl'] = 'true'
         node.set['appdynamics']['controller']['user'] = 'someuser'
         node.set['appdynamics']['controller']['accesskey'] = 'supersecret'
         node.set['appdynamics']['http_proxy']['host'] = 'appdynamics-proxy.domain.com'
         node.set['appdynamics']['http_proxy']['port'] = '80'
         node.set['appdynamics']['install_dir'] = 'C:\Program Files\Appdynamics'
-        node.set['appdynamics']['dotnet_agent']['source'] = 'https://packages.appdynamics.com/dotnet/latest'
       end.converge(described_recipe)
     end
     it 'creates a temp directory' do
       expect(chef_run).to create_directory('c:\\windows\\Temp')
       expect(chef_run).to_not create_directory('c:\\windows\\not_temp')
-    end
-    it 'creates a remote_file with attributes' do
-      expect(chef_run).to create_remote_file('c:\\windows\\Temp\\dotNetAgentSetup64.msi')
-      expect(chef_run).to_not create_remote_file('c:\\windows\\Temp\\dotNetAgentSetup.msi')
     end
     it 'enables MSDTC service' do
       expect(chef_run).to enable_service('MSDTC')
@@ -114,7 +96,7 @@ describe 'appdynamics::dotnet_agent' do
       expect(chef_run).to_not enable_service('COMSysApp')
     end
     it 'enables COMSysApp service' do
-      chef_run.node.set['appdynamics']['dotnet_agent']['version'] = '4.0.7.0'
+      chef_run.node.set['appdynamics']['dotnet_agent']['version'] = '4.0.8.0'
       chef_run.converge(described_recipe)
       expect(chef_run).to enable_service('COMSysApp')
       expect(chef_run).to_not enable_service('not_COMSysApp')
@@ -123,7 +105,7 @@ describe 'appdynamics::dotnet_agent' do
       expect(chef_run).to create_template('c:\\windows\\Temp\\setup.xml')
       expect(chef_run).to_not create_template('c:\\windows\\Temp\\not_setup.xml')
     end
-    it 'installs windows_feature IIS-Request-Monitor' do
+    it 'installs windows_feature IIS-RequestMonitor' do
       expect(chef_run).to install_windows_feature('IIS-RequestMonitor')
       expect(chef_run).to_not install_windows_feature('not_IIS-RequestMonitor')
     end

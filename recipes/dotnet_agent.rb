@@ -2,27 +2,16 @@ agent = node['appdynamics']['dotnet_agent']
 controller = node['appdynamics']['controller']
 proxy = node['appdynamics']['http_proxy']
 install_directory = agent['install_dir']
-system_directory = node['kernel']['os_info']['windows_directory']
 
-agent_msi_path = "#{system_directory}\\Temp"
-setup_config = "#{agent_msi_path}\\setup.xml"
-install_log_file = "#{agent_msi_path}\\DotnetAgentInstall.log"
+temp_path = "#{node['kernel']['os_info']['windows_directory']}\\Temp"
+setup_config = "#{temp_path}\\setup.xml"
+install_log_file = "#{temp_path}\\DotnetAgentInstall.log"
 
-# Check the bitness of the OS to determine the installer to download and run
-case node['kernel']['os_info']['os_architecture']
-when /64/
-  agent_msi = "#{agent_msi_path}\\dotNetAgentSetup64.msi"
-  source_path = "#{agent['source']}/dotNetAgentSetup64.msi"
-when /32/
-  agent_msi = "#{agent_msi_path}\\dotNetAgentSetup.msi"
-  source_path = "#{agent['source']}/dotNetAgentSetup.msi"
-else
-  raise 'Unsupported OS architecture'
-end
+package_full_url = "#{agent['source']}/#{agent['version']}/#{agent['package_file']}"
 
 # create directory if it doesn't exist
 directory 'temp' do
-  path agent_msi_path
+  path temp_path
 end
 
 # MSDTC Service
@@ -63,14 +52,14 @@ template setup_config do
 end
 
 # Download the msi file from source
-remote_file agent_msi do
-  source source_path
-  notifies :install, 'package[AppDynamics .NET Agent]', :immediately
-end
+# remote_file agent_msi do
+#   source package_full_url
+#   notifies :install, 'package[AppDynamics .NET Agent]', :immediately
+# end
 
 # Installing the agent
 package 'AppDynamics .NET Agent' do
-  source agent_msi
+  source package_full_url
   options "/l*v \"#{install_log_file}\" AD_SetupFile=\"#{setup_config}\" INSTALLDIR=\"#{install_directory}\""
 end
 
