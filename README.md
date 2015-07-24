@@ -9,8 +9,8 @@ Cookbooks for installing AppDynamics agents.
 Learn more about AppDynamics at:
 
 * http://www.appdynamics.com/ (and check out the handsome devil next to the "Act" bubble in the photo)
-* https://docs.appdynamics.com/display/PRO40/Getting+Started
-* https://docs.appdynamics.com/display/PRO40/Install+and+Administer+Agents
+* https://docs.appdynamics.com/display/PRO41/Getting+Started
+* https://docs.appdynamics.com/display/PRO41/Install+and+Administer+Agents
 
 ## Requirements
 
@@ -21,15 +21,16 @@ Learn more about AppDynamics at:
 * java cookbook
 * apt cookbook
 * Python and Node.JS recipes are tested on Ubuntu and CentOS
+* .Net recipes are tested on Windows2012r2 and Windows2008r2
 
 ## Attributes
 
 For more information about these settings, please refer to the AppDynamics documentation for the relevant agent:
 
-* [Install the Node.js Agent - Advanced Instructions](https://docs.appdynamics.com/display/PRO40/Install+the+Node.js+Agent#InstalltheNode.jsAgent-AdvancedInstructions)
-* [Python Agent Settings](https://docs.appdynamics.com/display/PRO40/Python+Agent+Settings+-+Beta)
-* [Java Agent Settings](https://docs.appdynamics.com/display/PRO40/Install+the+Java+Agent)
-* [.NET Agent Settings](https://docs.appdynamics.com/display/PRO40/Install+the+.NET+Agent)
+* [Install the Node.js Agent - Advanced Instructions](https://docs.appdynamics.com/display/PRO41/Install+the+Node.js+Agent#InstalltheNode.jsAgent-AdvancedInstructions)
+* [Python Agent Settings](https://docs.appdynamics.com/display/PRO41/Python+Agent+Setting)
+* [Java Agent Settings](https://docs.appdynamics.com/display/PRO41/Install+the+Java+Agent)
+* [.NET Agent Settings](https://docs.appdynamics.com/display/PRO41/Install+the+.NET+Agent)
 
 ### Default Attributes
 
@@ -123,9 +124,6 @@ The `dotnet_agent` recipe has some additional attributes you may set:
 * `node['appdynamics']['controller']['port']`
 * `node['appdynamics']['controller']['user']`
 * `node['appdynamics']['controller']['accesskey']`
-* `node['appdynamics']['dotnet_agent']['version']`
-* `node['appdynamics']['dotnet_agent']['checksum']`
-* `node['appdynamics']['dotnet_agent']['source']`
 
 For example, you might set these in a Chef role file:
 
@@ -139,11 +137,6 @@ default_attributes (
       'ssl' => true,
       'user' => 'someuser',
       'accesskey' => 'supersecret',
-    },
-    'dotnet_agent' => {
-      'version' => '4.0.7.0',
-      'checksum' => '1c73e49e0b24df53f048c814da992c2fdade5fc7c47aeb1aaccd4726d9a4d6f7',
-      'source' => 'http://something/AppdynamicsInstallers/'
     }
   }
 )

@@ -5,4 +5,4 @@ This file is used to list changes made in each version of the rabbit_support coo
 
 0.0.1
 -----
-- [Al Kemner] - bump metadata version, add changelog.md, resolve FoodCritic/Rubocop failures, add spec testing for dotnet_agent.rb/java_agent.rb/machine_agent.rb
+- [Al Kemner] - bump metadata version, add changelog.md, resolve FoodCritic/Rubocop failures for all files, add unit(chefspec) & integration(serverspec) testing for dotnet_agent.rb. remove checksum, subscripe AppDynamics.Agent.Coordinator_service to config template so appd service will restart automaticly if template properties get changed. 
