@@ -96,3 +96,21 @@ suites:
           accesskey: controller-accesskey
         java_agent:
           source: http://10.0.72.177:10000/JavaAppAgent.zip
+  - name: php_agent
+    run_list:
+      - recipe[apt::default]
+      - recipe[php::default]
+      - recipe[appdynamics::php_agent]
+    attributes:
+      appdynamics:
+        app_name: test-app
+        tier_name: test-tier
+        node_name: test-node
+        controller:
+          host: controller-host
+          port: 1234
+          ssl: true
+          user: controller-user
+          accesskey: controller-accesskey
+        php_agent:
+          source: http://10.0.72.177:10000/appdynamics-php-agent.tar.bz2
