@@ -47,15 +47,11 @@ template setup_config do
     :controller_user => controller['user'],
     :controller_accesskey => controller['accesskey'],
     :proxy_host => proxy['host'],
-    :proxy_port => proxy['port']
+    :proxy_port => proxy['port'],
+    :instrument_iis => agent['instrument_iis']
   )
+  notifies :restart, 'service[AppDynamics.Agent.Coordinator_service]', :delayed
 end
-
-# Download the msi file from source
-# remote_file agent_msi do
-#   source package_full_url
-#   notifies :install, 'package[AppDynamics .NET Agent]', :immediately
-# end
 
 # Installing the agent
 package 'AppDynamics .NET Agent' do
@@ -65,5 +61,16 @@ end
 
 service 'AppDynamics.Agent.Coordinator_service' do
   action [:enable, :start]
-  subscribes :restart, 'template[setup_config]', :delayed
+end
+
+if agent['instrument_iis'] == true
+  powershell_script 'Restart IIS' do
+    code <<-EOH
+    IISReset
+    EOH
+    action :nothing
+    subscribes :run, 'service[AppDynamics.Agent.Coordinator_service]', :delayed
+  end
+else
+  Chef::Log.warn('Not performing IISReset because instrument_iis does not equal true.')
 end

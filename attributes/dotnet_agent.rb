@@ -5,6 +5,7 @@ default['appdynamics']['dotnet_agent']['install_dir'] = 'C:\Program Files\Appdyn
 default['appdynamics']['dotnet_agent']['logfiles_dir'] = 'C:\DotNetAgent\Logs'
 default['appdynamics']['dotnet_agent']['template']['cookbook'] = 'appdynamics'
 default['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/setup.config.erb'
+default['appdynamics']['dotnet_agent']['instrument_iis'] = false
 
 # Check the bitness of the OS to determine the installer to download and run
 if node['kernel']['machine'] != 'x86_64'
