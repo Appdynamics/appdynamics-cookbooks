@@ -10,3 +10,7 @@ bin/*
 vendor/
 
 Berksfile.lock
+coverage/*
+
+# Mac crap
+.DS_Store

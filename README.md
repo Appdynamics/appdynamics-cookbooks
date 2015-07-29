@@ -4,27 +4,33 @@
 
 Cookbooks for installing AppDynamics agents.
 
-**This cookbook is a WIP. It currently only covers the Python and Node.js agents. See the issues for what we're working on.**
+**This cookbook is a WIP. See the issues for what we're working on.**
 
 Learn more about AppDynamics at:
 
 * http://www.appdynamics.com/ (and check out the handsome devil next to the "Act" bubble in the photo)
-* https://docs.appdynamics.com/display/PRO40/Getting+Started
-* https://docs.appdynamics.com/display/PRO40/Install+and+Administer+Agents
+* https://docs.appdynamics.com/display/PRO41/Getting+Started
+* https://docs.appdynamics.com/display/PRO41/Install+and+Administer+Agents
 
 ## Requirements
 
 * Chef >= 0.10.0
 * python cookbook
 * nodejs cookbook
+* windows cookbook
+* java cookbook
+* apt cookbook
 * Python and Node.JS recipes are tested on Ubuntu and CentOS
+* .Net recipes are tested on Windows2012r2 and Windows2008r2
 
 ## Attributes
 
 For more information about these settings, please refer to the AppDynamics documentation for the relevant agent:
 
-* [Install the Node.js Agent - Advanced Instructions](https://docs.appdynamics.com/display/PRO40/Install+the+Node.js+Agent#InstalltheNode.jsAgent-AdvancedInstructions)
-* [Python Agent Settings](https://docs.appdynamics.com/display/PRO40/Python+Agent+Settings+-+Beta)
+* [Install the Node.js Agent - Advanced Instructions](https://docs.appdynamics.com/display/PRO41/Install+the+Node.js+Agent#InstalltheNode.jsAgent-AdvancedInstructions)
+* [Python Agent Settings](https://docs.appdynamics.com/display/PRO41/Python+Agent+Setting)
+* [Java Agent Settings](https://docs.appdynamics.com/display/PRO41/Install+the+Java+Agent)
+* [.NET Agent Settings](https://docs.appdynamics.com/display/PRO41/Install+the+.NET+Agent)
 
 ### Default Attributes
 
@@ -96,3 +102,42 @@ default_attributes (
 **Step 2.** Add `recipe[appdynamics::python_agent]` to your run list.
 
 **Step 3.** Update your recipes that deploy your application to enable the Python agent in your application. See [Instrument Python Applications](https://docs.appdynamics.com/display/PRO40/Instrument+Python+Applications+-+Beta#InstrumentPythonApplications-Beta-InstrumenttheApplication).
+
+### .Net Agent Configuration Attributes
+
+The `dotnet_agent` recipe has some additional attributes you may set:
+
+* `node['appdynamics']['dotnet_agent']['version']` - The version of the .net agent you wish to use. defaults to `latest`
+* `node['appdynamics']['dotnet_agent']['install_dir']` - Set to the path you want the agent to be installed at, it defaults to `C:\Program Files\Appdynamics`.
+* `node['appdynamics']['dotnet_agent']['source']` - base url for downloading the agent from.
+* `node['appdynamics']['dotnet_agent']['logfiles_dir']` - Set the logfile directory. defaults to `C:\DotNetAgent\Logs`. 
+
+## Usage
+
+### Instrumenting a .Net IIS Application
+
+**Step 1.** Set the following node attributes (documented above):
+
+* `node['appdynamics']['app_name']`
+* `node['appdynamics']['controller']['host']`
+* `node['appdynamics']['controller']['port']`
+* `node['appdynamics']['controller']['user']`
+* `node['appdynamics']['controller']['accesskey']`
+
+For example, you might set these in a Chef role file:
+
+```ruby
+default_attributes (
+  'appdynamics' => {
+    'app_name' => 'my app',
+    'controller' => {
+      'host' => 'my-controller',
+      'port' => '8181',
+      'ssl' => true,
+      'user' => 'someuser',
+      'accesskey' => 'supersecret',
+    }
+  }
+)
+
+**Step 2.** Add `recipe[appdynamics::dotnet_agent]` to your run list.
