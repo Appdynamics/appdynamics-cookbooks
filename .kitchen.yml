@@ -1,12 +1,26 @@
 ---
 driver:
   name: vagrant
+  gui: false
   customize:
     memory: 2048
+
+provisioner:
+  name: chef_zero
 
 platforms:
   - name: ubuntu-12.04
   - name: centos-6.4
+  - name: windows2012
+    driver_config:
+      box: opentable/win-2012r2-standard-amd64-nocm
+      network:
+        - ["forwarded_port", {guest: 3389, host: 33389}]
+  - name: windows2008r2
+    driver_config:
+      box: opentable/win-2008r2-standard-amd64-nocm
+      network:
+        - ["forwarded_port", {guest: 3389, host: 33390}]
 
 suites:
   - name: nodejs_agent
@@ -33,6 +47,10 @@ suites:
             password_file: /tmp/foo/bar
         nodejs_agent:
           path: /home/vagrant
+    excludes:
+      - windows2012
+      - windows2008r2
+
   - name: python_agent
     run_list:
       - recipe[python::default]
@@ -56,6 +74,10 @@ suites:
           python_agent:
             debug: true
             dir: '/opt/pyagent'
+    excludes:
+    - windows2012
+    - windows2008r2
+
   - name: machine_agent
     run_list:
       - recipe[apt::default]
@@ -79,6 +101,10 @@ suites:
             password_file: /tmp/foo/bar
         machine_agent:
           source: http://10.0.72.177:10000/MachineAgent.zip
+    excludes:
+    - windows2012
+    - windows2008r2
+
   - name: java_agent
     run_list:
       - recipe[apt::default]
@@ -96,3 +122,28 @@ suites:
           accesskey: controller-accesskey
         java_agent:
           source: http://10.0.72.177:10000/JavaAppAgent.zip
+    excludes:
+    - windows2012
+    - windows2008r2
+
+  - name: dotnet_agent
+    run_list:
+      - recipe[iis]
+      - recipe[appdynamics::dotnet_agent]
+    attributes:
+      appdynamics:
+        app_name: test-app
+        controller:
+          host: controller-host
+          port: 443
+          ssl: true
+          user: controller-user
+          accesskey: controller-accesskey
+        dotnet_agent:
+          instrument_iis: true
+    chef_client:
+      config:
+        log_level: :debug
+    excludes:
+      - ubuntu-12.04
+      - centos-6.4

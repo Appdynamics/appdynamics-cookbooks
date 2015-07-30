@@ -10,3 +10,5 @@ bin/*
 vendor/
 
 Berksfile.lock
+coverage/*
+.DS_Store
