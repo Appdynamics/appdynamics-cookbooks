@@ -2,25 +2,25 @@ agent = node['appdynamics']['java_agent']
 controller = node['appdynamics']['controller']
 agent_zip = node['appdynamics']['agent_zip']
 
-package "unzip" if node[:platform_family].include?("debian")
+package 'unzip' if node['platform_family'].include?('debian')
 
 directory "#{agent['install_dir']}/conf" do
   owner agent['owner']
   group agent['group']
-  mode "0755"
+  mode '0755'
   recursive true
   action :create
 end
 
 remote_file agent_zip do
-  source agent['source'] % {:version => agent['version']}
+  source agent['source'] % { :version => agent['version'] }
   checksum agent['checksum']
   backup false
-  mode "0444"
-  notifies :run, "execute[unzip-appdynamics-java-agent]", :immediately
+  mode '0444'
+  notifies :run, 'execute[unzip-appdynamics-java-agent]', :immediately
 end
 
-execute "unzip-appdynamics-java-agent" do
+execute 'unzip-appdynamics-java-agent' do
   cwd agent['install_dir']
   command "unzip -qqo #{agent_zip}"
 end
@@ -30,7 +30,7 @@ template "#{agent['install_dir']}/conf/controller-info.xml" do
   source agent['template']['source']
   owner agent['owner']
   group agent['group']
-  mode "0600"
+  mode '0600'
 
   variables(
     :app_name => node['appdynamics']['app_name'],
@@ -41,6 +41,6 @@ template "#{agent['install_dir']}/conf/controller-info.xml" do
     :controller_port => controller['port'],
     :controller_ssl => controller['ssl'],
     :controller_user => controller['user'],
-    :controller_accesskey => controller['accesskey'],
+    :controller_accesskey => controller['accesskey']
   )
 end

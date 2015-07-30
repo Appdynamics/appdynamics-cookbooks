@@ -16,7 +16,7 @@ template agent['config_file'] do
   source agent['template']['source']
   owner agent['user']
   group agent['group']
-  mode "0600"
+  mode '0600'
 
   variables(
     :app_name => node['appdynamics']['app_name'],
