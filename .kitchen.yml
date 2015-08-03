@@ -141,6 +141,7 @@ suites:
           accesskey: controller-accesskey
         dotnet_agent:
           instrument_iis: true
+          standalone_apps: [{name: W3SVC, executable: svchost.exe, tier: w3svc, commandline: -k iissvcs, restart: false },{name: MSDTC, executable: msdtc.exe, tier: msdtc, commandline: , restart: true}]
     chef_client:
       config:
         log_level: :debug

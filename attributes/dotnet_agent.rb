@@ -13,3 +13,16 @@ if node['kernel']['machine'] != 'x86_64'
 else
   default['appdynamics']['dotnet_agent']['package_file'] = 'dotNetAgentSetup64.msi'
 end
+
+# instrumenting windows services and/or standalone apps
+# standalone apps must have restart = false because the service resource will fail trying to restart a non-windows service
+default['appdynamics']['dotnet_agent']['standalone_apps'] = nil
+# example useage
+# default['appdynamics']['dotnet_agent']['standalone_apps'] = [
+#   {
+#     'name' => 'WindowsServiceNameA', 'executable' => 'a.exe', 'tier' => 'TierA', 'commandline' => 'nil', 'restart' => true
+#   },
+#   {
+#     'name' => 'ExecutableNameB', 'executable' => 'b.exe', 'tier' => 'TierB', 'commandline' => '-a -b', 'restart' => false
+#   }
+# ]

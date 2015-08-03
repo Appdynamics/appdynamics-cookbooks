@@ -110,7 +110,9 @@ The `dotnet_agent` recipe has some additional attributes you may set:
 * `node['appdynamics']['dotnet_agent']['version']` - The version of the .net agent you wish to use. defaults to `latest`
 * `node['appdynamics']['dotnet_agent']['install_dir']` - Set to the path you want the agent to be installed at, it defaults to `C:\Program Files\Appdynamics`.
 * `node['appdynamics']['dotnet_agent']['source']` - base url for downloading the agent from.
-* `node['appdynamics']['dotnet_agent']['logfiles_dir']` - Set the logfile directory. defaults to `C:\DotNetAgent\Logs`. 
+* `node['appdynamics']['dotnet_agent']['logfiles_dir']` - Set the logfile directory. defaults to `C:\DotNetAgent\Logs`.
+* `node['appdynamics']['dotnet_agent']['instrument_iis']` - defaults to false. override to `true` if iis instrumentation is needed.
+* `node['appdynamics']['dotnet_agent']['standalone_apps']` - defaults to nil. use this to instrument windows services and/or standalone apps. make sure restart = false for apps that are not windows services, because the service resource will fail trying to restart a non-windows service.
 
 ## Usage
 
@@ -123,6 +125,8 @@ The `dotnet_agent` recipe has some additional attributes you may set:
 * `node['appdynamics']['controller']['port']`
 * `node['appdynamics']['controller']['user']`
 * `node['appdynamics']['controller']['accesskey']`
+* `node['appdynamics']['dotnet_agent']['instrument_iis']`
+* `node['appdynamics']['dotnet_agent']['standalone_apps']`
 
 For example, you might set these in a Chef role file:
 
@@ -135,7 +139,18 @@ default_attributes (
       'port' => '8181',
       'ssl' => true,
       'user' => 'someuser',
-      'accesskey' => 'supersecret',
+      'accesskey' => 'supersecret'
+    }
+    'dotnet_agent' => {
+      'instrument_iis' => true,
+      'standalone_apps' => [
+        {
+          'name' => 'WindowsServiceNameA', 'executable' => 'a.exe', 'tier' => 'TierA', 'commandline' => 'nil', 'restart' => true
+        },
+        {
+          'name' => 'ExecutableNameB', 'executable' => 'b.exe', 'tier' => 'TierB', 'commandline' => '-a -b', 'restart' => false
+        }
+      ]
     }
   }
 )

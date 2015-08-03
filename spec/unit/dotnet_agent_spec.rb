@@ -7,6 +7,14 @@ describe 'appdynamics::dotnet_agent' do
         node.automatic['kernel']['machine'] = 'x86_64'
         node.set['appdynamics']['dotnet_agent']['template']['cookbook'] = 'appdynamics'
         node.set['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/setup.config.erb'
+        node.set['appdynamics']['dotnet_agent']['standalone_apps'] = [
+          {
+            'name' => 'WindowsServiceNameA', 'executable' => 'a.exe', 'tier' => 'TierA', 'commandline' => 'nil', 'restart' => true
+          },
+          {
+            'name' => 'ExecutableNameB', 'executable' => 'b.exe', 'tier' => 'TierB', 'commandline' => '-a -b', 'restart' => false
+          }
+        ]
         node.set['appdynamics']['app_name'] = 'myapp'
         node.set['appdynamics']['controller']['host'] = 'appdynamics-controller.domain.com'
         node.set['appdynamics']['controller']['port'] = '443'
@@ -20,19 +28,19 @@ describe 'appdynamics::dotnet_agent' do
     it 'creates a temp directory' do
       expect(chef_run).to create_directory('temp')
     end
-    it 'enables MSDTC service' do
+    it 'enables & starts MSDTC service' do
       expect(chef_run).to enable_service('MSDTC')
       expect(chef_run).to start_service('MSDTC')
     end
-    it 'enables Winmgmt service' do
+    it 'enables & starts Winmgmt service' do
       expect(chef_run).to enable_service('Winmgmt')
       expect(chef_run).to start_service('Winmgmt')
     end
-    it 'does not enable COMSysApp service' do
+    it 'does not enable or start COMSysApp service' do
       expect(chef_run).to_not enable_service('COMSysApp')
       expect(chef_run).to_not start_service('COMSysApp')
     end
-    it 'enables COMSysApp service' do
+    it 'enables & starts COMSysApp service' do
       chef_run.node.set['appdynamics']['dotnet_agent']['version'] = '4.0.8.0'
       chef_run.converge(described_recipe)
       expect(chef_run).to enable_service('COMSysApp')
@@ -47,7 +55,7 @@ describe 'appdynamics::dotnet_agent' do
     it 'installs package AppDynamics .NET Agent' do
       expect(chef_run).to install_package('AppDynamics .NET Agent')
     end
-    it 'enables AppDynamics.Agent.Coordinator_service' do
+    it 'enables & starts AppDynamics.Agent.Coordinator_service' do
       expect(chef_run).to enable_service('AppDynamics.Agent.Coordinator_service')
       expect(chef_run).to start_service('AppDynamics.Agent.Coordinator_service')
     end
@@ -72,6 +80,18 @@ describe 'appdynamics::dotnet_agent' do
       chef_run.converge(described_recipe)
       expect(chef_run).to_not run_powershell_script('Restart IIS')
     end
+    it 'service WindowsServiceNameA subscribes to service AppDynamics.Agent.Coordinator_service' do
+      expect(chef_run.service('WindowsServiceNameA')).to subscribe_to('service[AppDynamics.Agent.Coordinator_service]').delayed
+    end
+    it 'service WindowsServiceNameA subscribes to package AppDynamics .NET Agent' do
+      expect(chef_run.service('WindowsServiceNameA')).to subscribe_to('package[AppDynamics .NET Agent]').delayed
+    end
+    it 'service WindowsServiceNameA to do nothing' do
+      expect(chef_run.service('WindowsServiceNameA')).to do_nothing
+    end
+    it 'service ExecutableNameB to do nothing' do
+      expect(chef_run.service('ExecutableNameB')).to do_nothing
+    end
   end
   context 'win2012r2' do
     let(:chef_run) do
@@ -79,6 +99,14 @@ describe 'appdynamics::dotnet_agent' do
         node.automatic['kernel']['machine'] = 'x86_64'
         node.set['appdynamics']['dotnet_agent']['template']['cookbook'] = 'appdynamics'
         node.set['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/setup.config.erb'
+        node.set['appdynamics']['dotnet_agent']['standalone_apps'] = [
+          {
+            'name' => 'WindowsServiceNameA', 'executable' => 'a.exe', 'tier' => 'TierA', 'commandline' => 'nil', 'restart' => true
+          },
+          {
+            'name' => 'ExecutableNameB', 'executable' => 'b.exe', 'tier' => 'TierB', 'commandline' => '-a -b', 'restart' => false
+          }
+        ]
         node.set['appdynamics']['app_name'] = 'myapp'
         node.set['appdynamics']['controller']['host'] = 'appdynamics-controller.domain.com'
         node.set['appdynamics']['controller']['port'] = '443'
@@ -92,19 +120,19 @@ describe 'appdynamics::dotnet_agent' do
     it 'creates a temp directory' do
       expect(chef_run).to create_directory('temp')
     end
-    it 'enables MSDTC service' do
+    it 'enables & starts MSDTC service' do
       expect(chef_run).to enable_service('MSDTC')
       expect(chef_run).to start_service('MSDTC')
     end
-    it 'enables Winmgmt service' do
+    it 'enables & starts Winmgmt service' do
       expect(chef_run).to enable_service('Winmgmt')
       expect(chef_run).to start_service('Winmgmt')
     end
-    it 'does not enable COMSysApp service' do
+    it 'does not enable or start COMSysApp service' do
       expect(chef_run).to_not enable_service('COMSysApp')
       expect(chef_run).to_not start_service('COMSysApp')
     end
-    it 'enables COMSysApp service' do
+    it 'enables & starts COMSysApp service' do
       chef_run.node.set['appdynamics']['dotnet_agent']['version'] = '4.0.8.0'
       chef_run.converge(described_recipe)
       expect(chef_run).to enable_service('COMSysApp')
@@ -119,7 +147,7 @@ describe 'appdynamics::dotnet_agent' do
     it 'installs package AppDynamics .NET Agent' do
       expect(chef_run).to install_package('AppDynamics .NET Agent')
     end
-    it 'enables AppDynamics.Agent.Coordinator_service' do
+    it 'enables & starts AppDynamics.Agent.Coordinator_service' do
       expect(chef_run).to enable_service('AppDynamics.Agent.Coordinator_service')
       expect(chef_run).to start_service('AppDynamics.Agent.Coordinator_service')
     end
@@ -138,6 +166,18 @@ describe 'appdynamics::dotnet_agent' do
       chef_run.node.set['appdynamics']['dotnet_agent']['instrument_iis'] = true
       chef_run.converge(described_recipe)
       expect(chef_run).to_not run_powershell_script('Restart IIS')
+    end
+    it 'service WindowsServiceNameA subscribes to service AppDynamics.Agent.Coordinator_service' do
+      expect(chef_run.service('WindowsServiceNameA')).to subscribe_to('service[AppDynamics.Agent.Coordinator_service]').delayed
+    end
+    it 'service WindowsServiceNameA subscribes to package AppDynamics .NET Agent' do
+      expect(chef_run.service('WindowsServiceNameA')).to subscribe_to('package[AppDynamics .NET Agent]').delayed
+    end
+    it 'service WindowsServiceNameA to do nothing' do
+      expect(chef_run.service('WindowsServiceNameA')).to do_nothing
+    end
+    it 'service ExecutableNameB to do nothing' do
+      expect(chef_run.service('ExecutableNameB')).to do_nothing
     end
   end
 end

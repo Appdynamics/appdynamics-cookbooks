@@ -30,6 +30,12 @@ describe file('c:\\windows\\Temp\\setup.xml') do
   it 'is a file' do
     expect(subject).to be_file
   end
+  it { should contain 'automatic enabled="true"' }
+  it { should contain 'svchost.exe' }
+  it { should contain 'msdtc.exe' }
+  it { should contain 'command-line="-k iissvcs"' }
+  it { should contain 'name="msdtc"' }
+  it { should contain 'name="w3svc"' }
 end
 describe package('AppDynamics .NET Agent') do
   it 'is installed' do

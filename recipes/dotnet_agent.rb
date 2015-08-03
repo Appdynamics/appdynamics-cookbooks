@@ -48,7 +48,8 @@ template setup_config do
     :controller_accesskey => controller['accesskey'],
     :proxy_host => proxy['host'],
     :proxy_port => proxy['port'],
-    :instrument_iis => agent['instrument_iis']
+    :instrument_iis => agent['instrument_iis'],
+    :standalone_apps => agent['standalone_apps']
   )
   notifies :restart, 'service[AppDynamics.Agent.Coordinator_service]', :delayed
 end
@@ -61,6 +62,19 @@ end
 
 service 'AppDynamics.Agent.Coordinator_service' do
   action [:enable, :start]
+end
+
+if agent['standalone_apps']
+  agent['standalone_apps'].each do |apps|
+    service apps['name'] do # ~FC022
+      action :nothing
+      subscribes :restart, 'service[AppDynamics.Agent.Coordinator_service]', :delayed
+      subscribes :restart, 'package[AppDynamics .NET Agent]', :delayed
+      only_if { apps['restart'] == true }
+    end
+  end
+else
+  Chef::Log.info('standalone_apps is nil not restarting any services.')
 end
 
 if agent['instrument_iis'] == true
