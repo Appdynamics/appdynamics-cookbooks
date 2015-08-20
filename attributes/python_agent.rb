@@ -1,6 +1,6 @@
 default['appdynamics']['python_agent']['virtualenv'] = nil
 default['appdynamics']['python_agent']['action'] = :install
-default['appdynamics']['python_agent']['version'] = 'latest'
+default['appdynamics']['python_agent']['version'] = nil
 default['appdynamics']['python_agent']['prerelease'] = true
 default['appdynamics']['python_agent']['config_file'] = '/etc/appdynamics-python.cfg'
 default['appdynamics']['python_agent']['user'] = 'root'

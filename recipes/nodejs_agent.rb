@@ -4,9 +4,12 @@ agent = node['appdynamics']['nodejs_agent']
 controller = node['appdynamics']['controller']
 http_proxy = node['appdynamics']['http_proxy']
 
+agent_version = agent['version'] || node['appdynamics']['version']
+fail 'You must specify either node[\'appdynamics\'][\'version\'] or node[\'appdynamics\'][\'nodejs_agent\'][\'version\']' unless agent_version
+
 nodejs_npm 'appdynamics' do
   path agent['path'] if agent['path']
-  version agent['version'] unless agent['version'] == 'latest'
+  version agent_version
   user agent['install_user'] if agent['install_user']
   group agent['install_group'] if agent['install_group']
 end
