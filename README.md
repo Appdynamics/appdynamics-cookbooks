@@ -155,5 +155,6 @@ default_attributes (
     }
   }
 )
+```
 
 **Step 2.** Add `recipe[appdynamics::dotnet_agent]` to your run list.
