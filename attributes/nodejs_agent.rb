@@ -1,6 +1,6 @@
 default['appdynamics']['nodejs_agent']['path'] = nil
 default['appdynamics']['nodejs_agent']['action'] = :install
-default['appdynamics']['nodejs_agent']['version'] = 'latest'
+default['appdynamics']['nodejs_agent']['version'] = nil
 default['appdynamics']['nodejs_agent']['helper_file'] = 'appd.js'
 
 default['appdynamics']['nodejs_agent']['template']['cookbook'] = 'appdynamics'

@@ -1,8 +1,17 @@
 agent = node['appdynamics']['java_agent']
 controller = node['appdynamics']['controller']
-agent_zip = node['appdynamics']['agent_zip']
 
-package 'unzip' if node['platform_family'].include?('debian')
+version = agent['version'] || node['appdynamics']['version']
+fail 'You must specify either node[\'appdynamics\'][\'version\'] or node[\'appdynamics\'][\'dotnet_agent\'][\'version\']' unless version
+
+package_source = agent['source']
+unless package_source
+  package_source = "#{node['appdynamics']['packages_site']}/java/#{version}/AppServerAgent-"
+  package_source << 'ibm-' if agent['ibm_jvm']
+  package_source << "#{version}.zip"
+end
+
+package 'unzip' if platform_family?('debian')
 
 directory "#{agent['install_dir']}/conf" do
   owner agent['owner']
@@ -12,8 +21,8 @@ directory "#{agent['install_dir']}/conf" do
   action :create
 end
 
-remote_file agent_zip do
-  source agent['source'] % { :version => agent['version'] }
+remote_file node['appdynamics']['java_agent']['zip'] do
+  source package_source
   checksum agent['checksum']
   backup false
   mode '0444'
@@ -22,7 +31,7 @@ end
 
 execute 'unzip-appdynamics-java-agent' do
   cwd agent['install_dir']
-  command "unzip -qqo #{agent_zip}"
+  command "unzip -qqo #{node['appdynamics']['java_agent']['zip']}"
 end
 
 template "#{agent['install_dir']}/conf/controller-info.xml" do

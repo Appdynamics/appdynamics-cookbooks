@@ -2,9 +2,37 @@ agent = node['appdynamics']['machine_agent']
 controller = node['appdynamics']['controller']
 http_proxy = node['appdynamics']['http_proxy']
 
-agent_zip = "#{Chef::Config[:file_cache_path]}/AppDynamicsMachineAgent.zip"
+version = agent['version'] || node['appdynamics']['version']
+fail 'You must specify either node[\'appdynamics\'][\'version\'] or node[\'appdynamics\'][\'machine_agent\'][\'version\']' unless version
 
-package 'unzip' if node['platform_family'].include?('debian')
+agent_zip = "#{Chef::Config[:file_cache_path]}/AppDynamicsMachineAgent.zip"
+package_source = agent['source']
+
+unless package_source
+  package_source = "#{node['appdynamics']['packages_site']}/machine/#{version}/"
+
+  if agent['use_bundled_package']
+    package_source << 'machineagent-bundle-'
+    if node['kernel']['machine'] == 'x86_64'
+      package_source << '64bit-'
+    else
+      package_source << '32bit-'
+    end
+
+    package_source << value_for_platform_family(
+      %w(mswin windows) => 'windows',
+      %w(darwin mac_os_x) => 'osx',
+      %w(omnios opensolaris solaris solaris2 smartos) => 'solaris',
+      'default' => 'linux'
+    )
+  else
+    package_source << 'MachineAgent'
+  end
+
+  package_source << "-#{version}.zip"
+end
+
+package 'unzip' if platform_family?('debian')
 
 directory "#{agent['install_dir']}/conf" do
   owner agent['owner']
@@ -15,7 +43,7 @@ directory "#{agent['install_dir']}/conf" do
 end
 
 remote_file agent_zip do
-  source agent['source'] % { :version => agent['version'] }
+  source package_source
   checksum agent['checksum']
   backup false
   mode '0444'

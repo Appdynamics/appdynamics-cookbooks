@@ -1,5 +1,6 @@
-default['appdynamics']['machine_agent']['version'] = 'latest'
-default['appdynamics']['machine_agent']['source'] = nil # 'https://packages.appdynamics.com/machine/%{version}/MachineAgent.zip'
+default['appdynamics']['machine_agent']['version'] = nil
+default['appdynamics']['machine_agent']['source'] = nil
+default['appdynamics']['machine_agent']['use_bundled_package'] = false
 default['appdynamics']['machine_agent']['checksum'] = nil
 default['appdynamics']['machine_agent']['install_dir'] = '/opt/appdynamics/machineagent'
 default['appdynamics']['machine_agent']['owner'] = 'root'

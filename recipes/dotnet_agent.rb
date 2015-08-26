@@ -1,13 +1,21 @@
 agent = node['appdynamics']['dotnet_agent']
 controller = node['appdynamics']['controller']
 proxy = node['appdynamics']['http_proxy']
-install_directory = agent['install_dir']
 
+version = agent['version'] || node['appdynamics']['version']
+fail 'You must specify either node[\'appdynamics\'][\'version\'] or node[\'appdynamics\'][\'dotnet_agent\'][\'version\']' unless version
+
+install_directory = agent['install_dir']
 temp_path = "#{node['kernel']['os_info']['windows_directory']}\\Temp"
 setup_config = "#{temp_path}\\setup.xml"
 install_log_file = "#{temp_path}\\DotnetAgentInstall.log"
 
-package_full_url = "#{agent['source']}/#{agent['version']}/#{agent['package_file']}"
+package_source = agent['source']
+unless package_source
+  package_source = "#{node['appdynamics']['packages_site']}/dotnet/#{version}/dotNetAgentSetup"
+  package_source << '64' if node['kernel']['machine'] == 'x86_64'
+  package_source << "-#{version}.msi"
+end
 
 # create directory if it doesn't exist
 directory 'temp' do
@@ -27,7 +35,7 @@ end
 # COM+ Service is not required in 4.1+
 service 'COMSysApp' do
   action [:enable, :start]
-  only_if { agent['version'] < '4.1' }
+  only_if { version < '4.1' }
 end
 
 windows_feature 'IIS-RequestMonitor' do
@@ -56,7 +64,7 @@ end
 
 # Installing the agent
 package 'AppDynamics .NET Agent' do
-  source package_full_url
+  source package_source
   options "/l*v \"#{install_log_file}\" AD_SetupFile=\"#{setup_config}\" INSTALLDIR=\"#{install_directory}\""
 end
 
