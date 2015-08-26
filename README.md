@@ -98,6 +98,7 @@ default_attributes (
     }
   }
 )
+```
 
 **Step 2.** Add `recipe[appdynamics::python_agent]` to your run list.
 
