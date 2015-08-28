@@ -2,10 +2,13 @@ agent = node['appdynamics']['python_agent']
 controller = node['appdynamics']['controller']
 http_proxy = node['appdynamics']['http_proxy']
 
+agent_version = agent['version'] || node['appdynamics']['version']
+fail 'You must specify either node[\'appdynamics\'][\'version\'] or node[\'appdynamics\'][\'python_agent\'][\'version\']' unless agent_version
+
 python_pip 'appdynamics' do
   virtualenv agent['virtualenv'] if agent['virtualenv']
   action agent['action']
-  version agent['version'] if agent['version'] != 'latest'
+  version agent_version
   user agent['user']
   group agent['group']
   options '--pre' if agent['prerelease']
@@ -16,7 +19,7 @@ template agent['config_file'] do
   source agent['template']['source']
   owner agent['user']
   group agent['group']
-  mode "0600"
+  mode '0600'
 
   variables(
     :app_name => node['appdynamics']['app_name'],

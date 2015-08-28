@@ -1,3 +1,5 @@
+default['appdynamics']['version'] = nil
+
 default['appdynamics']['app_name'] = nil
 default['appdynamics']['tier_name'] = nil
 default['appdynamics']['node_name'] = nil
@@ -13,5 +15,6 @@ default['appdynamics']['http_proxy']['port'] = nil
 default['appdynamics']['http_proxy']['user'] = nil
 default['appdynamics']['http_proxy']['password_file'] = nil
 
-default['appdynamics']['unzip_command'] = "unzip -qq"
-default['appdynamics']['agent_zip'] = "#{Chef::Config[:file_cache_path]}/AppDynamicsJavaAgent.zip"
+default['appdynamics']['unzip_command'] = 'unzip -qq'
+
+default['appdynamics']['packages_site'] = 'https://packages.appdynamics.com/'
