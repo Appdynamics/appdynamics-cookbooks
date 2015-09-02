@@ -5,6 +5,7 @@ describe 'appdynamics::dotnet_agent' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'windows', version: '2008R2') do |node|
         node.automatic['kernel']['machine'] = 'x86_64'
+        node.set['appdynamics']['dotnet_agent']['version'] = '4.1.3.0'
         node.set['appdynamics']['dotnet_agent']['template']['cookbook'] = 'appdynamics'
         node.set['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/setup.config.erb'
         node.set['appdynamics']['dotnet_agent']['standalone_apps'] = [
@@ -53,11 +54,7 @@ describe 'appdynamics::dotnet_agent' do
       expect(chef_run).to install_windows_feature('IIS-RequestMonitor')
     end
     it 'installs package AppDynamics .NET Agent' do
-      chef_run.node.set['appdynamics']['dotnet_agent']['version'] = '4.1.2.0'
-      chef_run.converge(described_recipe)
-      expect(chef_run).to install_package('AppDynamics .NET Agent').with(
-        'package' => 'https://packages.appdynamics.com/dotnet/4.1.2.0/dotNetAgentSetup64-4.1.2.0.msi'
-      )
+      expect(chef_run).to install_package('AppDynamics .NET Agent')
     end
     it 'enables & starts AppDynamics.Agent.Coordinator_service' do
       expect(chef_run).to enable_service('AppDynamics.Agent.Coordinator_service')
@@ -101,6 +98,7 @@ describe 'appdynamics::dotnet_agent' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'windows', version: '2012R2') do |node|
         node.automatic['kernel']['machine'] = 'x86_64'
+        node.set['appdynamics']['dotnet_agent']['version'] = '4.1.3.0'
         node.set['appdynamics']['dotnet_agent']['template']['cookbook'] = 'appdynamics'
         node.set['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/setup.config.erb'
         node.set['appdynamics']['dotnet_agent']['standalone_apps'] = [
