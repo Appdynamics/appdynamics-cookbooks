@@ -1,7 +1,8 @@
 name              'appdynamics'
-version           '0.1.2'
+version           '0.1.3'
 
 maintainer        'AppDynamics'
+maintainer_email  'help@appdynamics.com'
 description       'Installs and configures AppDynamics agents'
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 source_url        'https://github.com/appdynamics/appdynamics-cookbooks'        if respond_to?(:source_url)
