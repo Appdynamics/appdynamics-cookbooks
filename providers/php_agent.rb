@@ -50,8 +50,11 @@ action :install do
   install_command << "--http-proxy-port=#{new_resoure.http_proxy_port}" if new_resource.http_proxy_port
   install_command << "--http-proxy-user=#{new_resoure.http_proxy_user}" if new_resource.http_proxy_user
   install_command << "--http-proxy-password-file=#{new_resoure.http_proxy_password_file}" if new_resource.http_proxy_password_file
-  install_command << "#{new_resource.controller_host} #{new_resource.controller_port}"
-  install_command << "#{new_resource.app_name} #{new_resource.tier_name} #{new_resource.node_name}"
+  install_command << new_resource.controller_host
+  install_command << new_resource.controller_port
+  install_command << new_resource.app_name
+  install_comamnd << new_resource.tier_name
+  install_command << new_resource.node_name
 
   execute "#{new_resource.name} :run install.sh" do
     action :nothing
