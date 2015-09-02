@@ -7,7 +7,7 @@ describe 'appdynamics::python_agent' do
       appd['app_name'] = 'app-name'
       appd['tier_name'] = 'tier-name'
       appd['node_name'] = 'node-name'
-
+      appd['version'] = '4.1.3.0'
       appd['controller']['host'] = 'controller-host'
       appd['controller']['port'] = 1234
     end.converge(described_recipe)
