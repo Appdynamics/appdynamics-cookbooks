@@ -8,7 +8,7 @@ describe 'appdynamics::nodejs_agent' do
       node.set['appdynamics']['node_name'] = 'node-name'
       node.set['appdynamics']['controller']['host'] = 'controller-host'
       node.set['appdynamics']['controller']['port'] = 1234
-
+      node.set['appdynamics']['nodejs_agent']['version'] = '4.1.3.0'
       node.set['appdynamics']['nodejs_agent']['path'] = '/some/path/here'
     end.converge(described_recipe)
   end
