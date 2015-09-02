@@ -17,4 +17,4 @@ default['appdynamics']['http_proxy']['password_file'] = nil
 
 default['appdynamics']['unzip_command'] = 'unzip -qq'
 
-default['appdynamics']['packages_site'] = 'https://packages.appdynamics.com/'
+default['appdynamics']['packages_site'] = 'https://packages.appdynamics.com'
