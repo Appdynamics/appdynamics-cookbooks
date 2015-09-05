@@ -3,6 +3,10 @@ appdynamics CHANGELOG
 
 This file is used to list changes made in each version of the appdynamics cookbook.
 
+0.1.4
+-----
+- [akemner] - add directory resource for java install_dir, add spec, and integration testing for java
+
 0.1.3
 -----
 - [akemner] - add maintainer_email and fix spec failures

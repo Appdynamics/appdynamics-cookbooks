@@ -34,6 +34,13 @@ execute 'unzip-appdynamics-java-agent' do
   command "unzip -qqo #{node['appdynamics']['java_agent']['zip']}"
 end
 
+directory "#{agent['install_dir']}" do
+  owner agent['owner']
+  group agent['group']
+  mode '0755'
+  recursive true
+end
+
 template "#{agent['install_dir']}/conf/controller-info.xml" do
   cookbook agent['template']['cookbook']
   source agent['template']['source']
