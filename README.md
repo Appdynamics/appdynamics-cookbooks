@@ -18,7 +18,7 @@ Learn more about AppDynamics at:
 * python cookbook
 * nodejs cookbook
 * windows cookbook
-* java cookbook
+* java cookbook recipes are tested on Ubuntu and CentOS
 * apt cookbook
 * Python and Node.JS recipes are tested on Ubuntu and CentOS
 * .Net recipes are tested on Windows2012r2 and Windows2008r2
@@ -167,3 +167,40 @@ default_attributes (
 ```
 
 **Step 2.** Add `recipe[appdynamics::dotnet_agent]` to your run list.
+
+
+### Instrumenting a Java Application
+
+**Step 1.** Set the following node attributes (documented above):
+
+* `node['appdynamics']['version']`
+* `node['appdynamics']['app_name']`
+* `node['appdynamics']['controller']['host']`
+* `node['appdynamics']['controller']['port']`
+* `node['appdynamics']['controller']['user']`
+* `node['appdynamics']['controller']['accesskey']`
+
+
+For example, you might set these in a Chef role file:
+
+```ruby
+default_attributes (
+  'appdynamics' => {
+    'app_name' => 'my app',
+    'controller' => {
+      'host' => 'my-controller',
+      'port' => '8181',
+      'ssl' => true,
+      'user' => 'someuser',
+      'accesskey' => 'supersecret'
+    }
+    'java' => {
+      'owner' => 'bob',
+    }
+  }
+)
+```
+
+**Step 2.** Add `recipe[appdynamics::java_agent]` to your run list.
+
+**Step 3.** See [Load the Java Agent in a JVM](https://docs.appdynamics.com/display/PRO41/Install+the+Java+Agent).

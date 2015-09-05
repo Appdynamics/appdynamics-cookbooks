@@ -15,7 +15,7 @@ provisioner:
       node_name: test-node
       controller:
         host: controller-host
-        port: 1234
+        port: 443
         ssl: true
         user: controller-user
         accesskey: controller-accesskey
@@ -78,8 +78,15 @@ suites:
 
   - name: java_agent
     run_list:
+      - recipe[test-helper::default]
+      - recipe[appdynamics_test::java_agent]
       - recipe[apt::default]
       - recipe[appdynamics::java_agent]
+
+    attributes:
+      appdynamics:
+        java_agent:
+          owner: someuser
     excludes:
     - windows2012
     - windows2008r2
