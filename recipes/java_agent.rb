@@ -34,7 +34,7 @@ execute 'unzip-appdynamics-java-agent' do
   command "unzip -qqo #{node['appdynamics']['java_agent']['zip']}"
 end
 
-directory "#{agent['install_dir']}" do
+directory agent['install_dir'] do
   owner agent['owner']
   group agent['group']
   mode '0755'
