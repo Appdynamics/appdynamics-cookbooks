@@ -32,6 +32,7 @@ end
 execute 'unzip-appdynamics-java-agent' do
   cwd agent['install_dir']
   command "unzip -qqo #{node['appdynamics']['java_agent']['zip']}"
+  command "chown -R #{agent['owner']}:#{agent['group']} #{agent['install_dir']}"
 end
 
 directory agent['install_dir'] do
