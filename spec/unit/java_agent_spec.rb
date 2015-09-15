@@ -21,13 +21,8 @@ describe 'appdynamics::java_agent' do
       user:   'someuser'
     )
     end
-    it 'runs a execute unzip-appdynamics-java-agent' do
-      expect(chef_run).to run_execute('unzip-appdynamics-java-agent')
-    end
-    it 'creates a directory /opt/appdynamics/javaagent with someuser' do
-      expect(chef_run).to create_directory('/opt/appdynamics/javaagent').with(
-      user:   'someuser'
-    )
+    it 'runs ark to unzip-appdynamics-java-agent' do
+      expect(chef_run).to dump_ark('unzip-appdynamics-java-agent')
     end
     it 'creates controller-info.xml from template' do
       expect(chef_run).to create_template('/opt/appdynamics/javaagent/conf/controller-info.xml')
@@ -53,13 +48,8 @@ describe 'appdynamics::java_agent' do
       user:   'someuser'
     )
     end
-    it 'runs a execute unzip-appdynamics-java-agent' do
-      expect(chef_run).to run_execute('unzip-appdynamics-java-agent')
-    end
-    it 'creates a directory /opt/appdynamics/javaagent with someuser' do
-      expect(chef_run).to create_directory('/opt/appdynamics/javaagent').with(
-      user:   'someuser'
-    )
+    it 'runs ark to unzip-appdynamics-java-agent' do
+      expect(chef_run).to dump_ark('unzip-appdynamics-java-agent')
     end
     it 'creates controller-info.xml from template' do
       expect(chef_run).to create_template('/opt/appdynamics/javaagent/conf/controller-info.xml')
