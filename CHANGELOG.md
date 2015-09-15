@@ -3,6 +3,10 @@ appdynamics CHANGELOG
 
 This file is used to list changes made in each version of the appdynamics cookbook.
 
+0.1.7
+-----
+- [amacaraeg] - updated ark resource to put instead of dump. removed directory resource for conf directory as it is not needed anymore. renamed resource for ark to put all files into opt/appd/javaagent directory. updated install_dir to point to opt/appd. included serverspec tests for the javaagent.jar file and removed the directory resource tests for the conf directory.
+
 0.1.6
 -----
 - [amacaraeg] - changing unzip option to ark resource so it includes permissions override.  removing directory resource located below it as it is not needed

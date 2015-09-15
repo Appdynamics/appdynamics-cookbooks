@@ -26,3 +26,9 @@ describe file("#{$node['appdynamics']['java_agent']['install_dir']}/conf/control
   it { should contain "#{$node['appdynamics']['tier_name']}" }
   it { should contain "#{$node['appdynamics']['node_name']}" }
 end
+describe file("#{$node['appdynamics']['java_agent']['install_dir']}/javaagent/javaagent.jar") do
+  it 'is a file' do
+    expect(subject).to be_file
+  end
+  it { should be_owned_by "#{$node['appdynamics']['java_agent']['owner']}" }
+end
