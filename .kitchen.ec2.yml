@@ -1,0 +1,129 @@
+driver:
+  name: ec2
+  aws_ssh_key_id: <%= ENV['AWS_SSH_KEY'] %>
+  security_group_ids:  <%= ENV['AWS_SECURITY_GROUPS'] %>
+  region: <%= ENV['AWS_REGION'] %>
+  availability_zone: <%= ENV['AWS_AVAILABILITY_ZONE'] %>
+  require_chef_omnibus: true
+  subnet_id: <%= ENV['AWS_SUBNET'] %>
+  instance_type: <%= ENV['INSTANCE_SIZE'] %>
+  associate_public_ip: false
+  interface: private
+  user_data: <%= ENV['USER_DATA_PATH'] %>
+  tags:
+    OWNER: <%= ENV['AWS_OWNER_TAG'] %>
+
+provisioner:
+  name: chef_zero
+  attributes:
+    appdynamics:
+      version: '4.1.2.0'
+      app_name: test-app
+      tier_name: test-tier
+      node_name: test-node
+      controller:
+        host: controller-host
+        port: 443
+        ssl: true
+        user: controller-user
+        accesskey: controller-accesskey
+        http_proxy:
+          host: http-proxy-host
+          port: 2345
+          user: http-proxy-user
+          password_file: /tmp/foo/bar
+
+transport:
+  ssh_key: ~/.ssh/<%= ENV['AWS_SSH_KEY'] %>.pem
+
+platforms:
+  - name: <%= ENV['AWS_CENTOS_PLATFORM_NAME'] %>
+    driver:
+      image_id: <%= ENV['AWS_CENTOS_AMI_ID'] %>
+    transport:
+      username: <%= ENV['AWS_CENTOS_USERNAME'] %>
+  - name: <%= ENV['AWS_UBUNTU_PLATFORM_NAME'] %>
+    driver:
+      image_id: <%= ENV['AWS_UBUNTU_AMI_ID'] %>
+    transport:
+      username: <%= ENV['AWS_UBUNTU_USERNAME'] %>
+  - name: <%= ENV['AWS_WINDOWS2012R2_PLATFORM_NAME'] %>
+    driver:
+      image_id: <%= ENV['AWS_WINDOWS2012R2_AMI_ID'] %>
+    transport:
+      username: <%= ENV['AWS_WINDOWS2012R2_USERNAME'] %>
+      name: winrm
+  - name: <%= ENV['AWS_WINDOWS2008R2_PLATFORM_NAME'] %>
+    driver:
+      image_id: <%= ENV['AWS_WINDOWS2008R2_AMI_ID'] %>
+    transport:
+      username: <%= ENV['AWS_WINDOWS2008R2_USERNAME'] %>
+      name: winrm
+
+suites:
+  - name: nodejs_agent
+    run_list:
+      - recipe[nodejs::default]
+      - recipe[appdynamics::nodejs_agent]
+    attributes:
+      nodejs:
+        install_method: source
+      appdynamics:
+        nodejs_agent:
+          path: /home/vagrant
+    excludes:
+      - <%= ENV['AWS_WINDOWS2012R2_PLATFORM_NAME'] %>
+      - <%= ENV['AWS_WINDOWS2008R2_PLATFORM_NAME'] %>
+
+  - name: python_agent
+    run_list:
+      - recipe[python::default]
+      - recipe[appdynamics::python_agent]
+    attributes:
+      appdynamics:
+        python_agent:
+          debug: true
+          dir: '/opt/pyagent'
+    excludes:
+      - <%= ENV['AWS_WINDOWS2012R2_PLATFORM_NAME'] %>
+      - <%= ENV['AWS_WINDOWS2008R2_PLATFORM_NAME'] %>
+
+  - name: machine_agent
+    run_list:
+      - recipe[apt::default]
+      - recipe[java::default]
+      - recipe[appdynamics::machine_agent]
+    excludes:
+      - <%= ENV['AWS_WINDOWS2012R2_PLATFORM_NAME'] %>
+      - <%= ENV['AWS_WINDOWS2008R2_PLATFORM_NAME'] %>
+
+  - name: java_agent
+    run_list:
+      - recipe[test-helper::default]
+      - recipe[appdynamics_test::java_agent]
+      - recipe[apt::default]
+      - recipe[appdynamics::java_agent]
+
+    attributes:
+      appdynamics:
+        java_agent:
+          owner: someuser
+    excludes:
+      - <%= ENV['AWS_WINDOWS2012R2_PLATFORM_NAME'] %>
+      - <%= ENV['AWS_WINDOWS2008R2_PLATFORM_NAME'] %>
+
+  - name: dotnet_agent
+    run_list:
+      - recipe[iis]
+      - recipe[appdynamics::dotnet_agent]
+    attributes:
+      appdynamics:
+        dotnet_agent:
+          instrument_iis: true
+          standalone_apps: [{name: W3SVC, executable: svchost.exe, tier: w3svc, commandline: -k iissvcs, restart: false },{name: MSDTC, executable: msdtc.exe, tier: msdtc, commandline: , restart: true}]
+    chef_client:
+      config:
+        log_level: :debug
+    excludes:
+      - <%= ENV['AWS_UBUNTU_PLATFORM_NAME'] %>
+      - <%= ENV['AWS_CENTOS_PLATFORM_NAME'] %>
