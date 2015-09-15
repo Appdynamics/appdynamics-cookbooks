@@ -26,20 +26,14 @@ remote_file node['appdynamics']['java_agent']['zip'] do
   checksum agent['checksum']
   backup false
   mode '0444'
-  notifies :run, 'execute[unzip-appdynamics-java-agent]', :immediately
+  notifies :run, 'ark[unzip-appdynamics-java-agent]', :immediately
 end
 
-execute 'unzip-appdynamics-java-agent' do
-  cwd agent['install_dir']
-  command "unzip -qqo #{node['appdynamics']['java_agent']['zip']}"
-  command "chown -R #{agent['owner']}:#{agent['group']} #{agent['install_dir']}"
-end
-
-directory agent['install_dir'] do
+ark 'unzip-appdynamics-java-agent' do
+  url "file://#{node['appdynamics']['java_agent']['zip']}"
+  path agent['install_dir']
   owner agent['owner']
-  group agent['group']
-  mode '0755'
-  recursive true
+  action :dump
 end
 
 template "#{agent['install_dir']}/conf/controller-info.xml" do
