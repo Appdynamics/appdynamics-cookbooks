@@ -9,13 +9,13 @@ provisioner:
   name: chef_zero
   attributes:
     appdynamics:
-      version: '4.1.2.0'
+      version: '4.1.3.0'
       app_name: test-app
       tier_name: test-tier
       node_name: test-node
       controller:
         host: controller-host
-        port: 1234
+        port: 443
         ssl: true
         user: controller-user
         accesskey: controller-accesskey
@@ -27,8 +27,8 @@ provisioner:
 
 platforms:
   - name: ubuntu-12.04
-  - name: centos-6.4
-  - name: windows2012
+  - name: centos-6.7
+  - name: windows2012r2
     driver_config:
       box: opentable/win-2012r2-standard-amd64-nocm
       network:
@@ -49,9 +49,10 @@ suites:
         install_method: source
       appdynamics:
         nodejs_agent:
+          version: '4.1.3'
           path: /home/vagrant
     excludes:
-      - windows2012
+      - windows2012r2
       - windows2008r2
 
   - name: python_agent
@@ -64,7 +65,7 @@ suites:
           debug: true
           dir: '/opt/pyagent'
     excludes:
-    - windows2012
+    - windows2012r2
     - windows2008r2
 
   - name: machine_agent
@@ -73,15 +74,22 @@ suites:
       - recipe[java::default]
       - recipe[appdynamics::machine_agent]
     excludes:
-    - windows2012
+    - windows2012r2
     - windows2008r2
 
   - name: java_agent
     run_list:
+      - recipe[test-helper::default]
+      - recipe[appdynamics_test::java_agent]
       - recipe[apt::default]
       - recipe[appdynamics::java_agent]
+
+    attributes:
+      appdynamics:
+        java_agent:
+          owner: someuser
     excludes:
-    - windows2012
+    - windows2012r2
     - windows2008r2
 
   - name: dotnet_agent
@@ -98,4 +106,4 @@ suites:
         log_level: :debug
     excludes:
       - ubuntu-12.04
-      - centos-6.4
+      - centos-6.7

@@ -3,6 +3,10 @@ appdynamics CHANGELOG
 
 This file is used to list changes made in each version of the appdynamics cookbook.
 
+0.2.0
+-----
+- [akemner] - jave_agent changes - changed from unzip to use ark cookbook. ark to put all files from zip into opt/appdynamics/javaagent directory. updated install_dir to point to opt/appdynamics. add spec, and integration testing for java. includes two fixture cookbooks, appdynamics-test and test-helper. test-helper allows for dynamic attribute testing with serverspec. locked rubocop to 0.33.0. this required a new gemsfile.lock
+
 0.1.3
 -----
 - [akemner] - add maintainer_email and fix spec failures
