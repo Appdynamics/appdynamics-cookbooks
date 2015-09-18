@@ -1,3 +1,5 @@
+include_recipe 'ark'
+
 agent = node['appdynamics']['java_agent']
 controller = node['appdynamics']['controller']
 
@@ -11,30 +13,21 @@ unless package_source
   package_source << "#{version}.zip"
 end
 
-package 'unzip' if platform_family?('debian')
-
-directory "#{agent['install_dir']}/conf" do
-  owner agent['owner']
-  group agent['group']
-  mode '0755'
-  recursive true
-  action :create
-end
-
 remote_file node['appdynamics']['java_agent']['zip'] do
   source package_source
   checksum agent['checksum']
   backup false
   mode '0444'
-  notifies :run, 'execute[unzip-appdynamics-java-agent]', :immediately
 end
 
-execute 'unzip-appdynamics-java-agent' do
-  cwd agent['install_dir']
-  command "unzip -qqo #{node['appdynamics']['java_agent']['zip']}"
+ark 'javaagent' do
+  url "file://#{node['appdynamics']['java_agent']['zip']}"
+  path agent['install_dir']
+  owner agent['owner']
+  action :put
 end
 
-template "#{agent['install_dir']}/conf/controller-info.xml" do
+template "#{agent['install_dir']}/javaagent/conf/controller-info.xml" do
   cookbook agent['template']['cookbook']
   source agent['template']['source']
   owner agent['owner']
