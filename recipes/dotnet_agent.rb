@@ -7,7 +7,7 @@ fail 'You must specify either node[\'appdynamics\'][\'version\'] or node[\'appdy
 
 install_directory = agent['install_dir']
 temp_path = "#{node['kernel']['os_info']['windows_directory']}\\Temp"
-setup_config = "#{temp_path}\\setup.xml"
+config = 'C:\\ProgramData\\AppDynamics\\DotNetAgent\\Config\\config.xml'
 install_log_file = "#{temp_path}\\DotnetAgentInstall.log"
 
 package_source = agent['source']
@@ -42,8 +42,14 @@ windows_feature 'IIS-RequestMonitor' do
   action :install
 end
 
-# Updating the setup config file based on the parameters
-template setup_config do
+# Installing the agent
+package 'AppDynamics .NET Agent' do
+  source package_source
+  options "/l*v \"#{install_log_file}\" INSTALLDIR=\"#{install_directory}\""
+end
+
+# Updating the config file based on the parameters
+template config do
   cookbook agent['template']['cookbook']
   source agent['template']['source']
   variables(
@@ -60,12 +66,6 @@ template setup_config do
     :standalone_apps => agent['standalone_apps']
   )
   notifies :restart, 'service[AppDynamics.Agent.Coordinator_service]', :delayed
-end
-
-# Installing the agent
-package 'AppDynamics .NET Agent' do
-  source package_source
-  options "/l*v \"#{install_log_file}\" AD_SetupFile=\"#{setup_config}\" INSTALLDIR=\"#{install_directory}\""
 end
 
 service 'AppDynamics.Agent.Coordinator_service' do

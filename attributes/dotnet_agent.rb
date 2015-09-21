@@ -3,7 +3,7 @@ default['appdynamics']['dotnet_agent']['source'] = nil
 default['appdynamics']['dotnet_agent']['install_dir'] = 'C:\Program Files\Appdynamics'
 default['appdynamics']['dotnet_agent']['logfiles_dir'] = 'C:\DotNetAgent\Logs'
 default['appdynamics']['dotnet_agent']['template']['cookbook'] = 'appdynamics'
-default['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/setup.config.erb'
+default['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/config.erb'
 default['appdynamics']['dotnet_agent']['instrument_iis'] = false
 
 # instrumenting windows services and/or standalone apps
