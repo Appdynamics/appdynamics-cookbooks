@@ -7,7 +7,7 @@ fail 'You must specify either node[\'appdynamics\'][\'version\'] or node[\'appdy
 
 install_directory = agent['install_dir']
 temp_path = "#{node['kernel']['os_info']['windows_directory']}\\Temp"
-config = 'C:\\ProgramData\\AppDynamics\\DotNetAgent\\Config\\config.xml'
+config = "#{node['kernel']['os_info']['system_drive']}\\ProgramData\\AppDynamics\\DotNetAgent\\Config\\config.xml"
 install_log_file = "#{temp_path}\\DotnetAgentInstall.log"
 
 package_source = agent['source']
