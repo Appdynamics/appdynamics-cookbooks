@@ -7,7 +7,7 @@ describe 'appdynamics::dotnet_agent' do
         node.automatic['kernel']['machine'] = 'x86_64'
         node.set['appdynamics']['dotnet_agent']['version'] = '4.1.3.0'
         node.set['appdynamics']['dotnet_agent']['template']['cookbook'] = 'appdynamics'
-        node.set['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/setup.config.erb'
+        node.set['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/config.erb'
         node.set['appdynamics']['dotnet_agent']['standalone_apps'] = [
           {
             'name' => 'WindowsServiceNameA', 'executable' => 'a.exe', 'tier' => 'TierA', 'commandline' => 'nil', 'restart' => true
@@ -47,8 +47,8 @@ describe 'appdynamics::dotnet_agent' do
       expect(chef_run).to enable_service('COMSysApp')
       expect(chef_run).to start_service('COMSysApp')
     end
-    it 'creates setup.xml from template' do
-      expect(chef_run).to create_template('C:\Windows\Temp\setup.xml')
+    it 'creates config.xml from template' do
+      expect(chef_run).to create_template('C:\ProgramData\AppDynamics\DotNetAgent\Config\config.xml')
     end
     it 'installs windows_feature IIS-RequestMonitor' do
       expect(chef_run).to install_windows_feature('IIS-RequestMonitor')
@@ -74,29 +74,28 @@ describe 'appdynamics::dotnet_agent' do
     it 'service ExecutableNameB to do nothing' do
       expect(chef_run.service('ExecutableNameB')).to do_nothing
     end
-# these tests passes on windows OS but not on nix. waiting for chefspec to support latest chef-client code
-#    it 'template C:\Windows\Temp\setup.xml to notify AppDynamics.Agent.Coordinator_service' do
-#      expect(chef_run.template('C:\Windows\Temp\setup.xml')).to notify('windows_service[AppDynamics.Agent.Coordinator_service]').to(:restart).delayed
-#    end
-#    it 'powershell_script Restart IIS does not subscribe AppDynamics.Agent.Coordinator_service' do
-#      expect(chef_run.powershell_script('Restart IIS')).to_not subscribe_to('service[AppDynamics.Agent.Coordinator_service]')
-#    end
-#    it 'powershell_script Restart IIS subscribes to AppDynamics.Agent.Coordinator_service' do
-#      chef_run.node.set['appdynamics']['dotnet_agent']['instrument_iis'] = true
-#      chef_run.converge(described_recipe)
-#      expect(chef_run.powershell_script('Restart IIS')).to subscribe_to('service[AppDynamics.Agent.Coordinator_service]').delayed
-#    end
-#    it 'powershell_script Restart IIS subscribes to package AppDynamics .NET Agent' do
-#      chef_run.node.set['appdynamics']['dotnet_agent']['instrument_iis'] = true
-#      chef_run.converge(described_recipe)
-#      expect(chef_run.powershell_script('Restart IIS')).to subscribe_to('package[AppDynamics .NET Agent]').delayed
-#    end
-#    it 'service WindowsServiceNameA subscribes to service AppDynamics.Agent.Coordinator_service' do
-#      expect(chef_run.service('WindowsServiceNameA')).to subscribe_to('service[AppDynamics.Agent.Coordinator_service]').delayed
-#    end
-#    it 'service WindowsServiceNameA subscribes to package AppDynamics .NET Agent' do
-#      expect(chef_run.service('WindowsServiceNameA')).to subscribe_to('package[AppDynamics .NET Agent]').delayed
-#    end
+    it 'template config.xml to notify AppDynamics.Agent.Coordinator_service' do
+      expect(chef_run.template('C:\ProgramData\AppDynamics\DotNetAgent\Config\config.xml')).to notify('service[AppDynamics.Agent.Coordinator_service]').to(:restart).delayed
+    end
+    it 'powershell_script Restart IIS does not subscribe AppDynamics.Agent.Coordinator_service' do
+      expect(chef_run.powershell_script('Restart IIS')).to_not subscribe_to('service[AppDynamics.Agent.Coordinator_service]')
+    end
+    it 'powershell_script Restart IIS subscribes to AppDynamics.Agent.Coordinator_service' do
+      chef_run.node.set['appdynamics']['dotnet_agent']['instrument_iis'] = true
+      chef_run.converge(described_recipe)
+      expect(chef_run.powershell_script('Restart IIS')).to subscribe_to('service[AppDynamics.Agent.Coordinator_service]').delayed
+    end
+    it 'powershell_script Restart IIS subscribes to package AppDynamics .NET Agent' do
+      chef_run.node.set['appdynamics']['dotnet_agent']['instrument_iis'] = true
+      chef_run.converge(described_recipe)
+      expect(chef_run.powershell_script('Restart IIS')).to subscribe_to('package[AppDynamics .NET Agent]').delayed
+    end
+    it 'service AppDynamics.Agent.Coordinator_service notifies service WindowsServiceNameA' do
+      expect(chef_run.service('AppDynamics.Agent.Coordinator_service')).to notify('service[WindowsServiceNameA]').delayed
+    end
+    it 'package AppDynamics .NET Agent notifies service WindowsServiceNameA' do
+      expect(chef_run.package('AppDynamics .NET Agent')).to notify('service[WindowsServiceNameA]').delayed
+    end
   end
   context 'win2012r2' do
     let(:chef_run) do
@@ -104,7 +103,7 @@ describe 'appdynamics::dotnet_agent' do
         node.automatic['kernel']['machine'] = 'x86_64'
         node.set['appdynamics']['dotnet_agent']['version'] = '4.1.3.0'
         node.set['appdynamics']['dotnet_agent']['template']['cookbook'] = 'appdynamics'
-        node.set['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/setup.config.erb'
+        node.set['appdynamics']['dotnet_agent']['template']['source'] = 'dotnet/config.erb'
         node.set['appdynamics']['dotnet_agent']['standalone_apps'] = [
           {
             'name' => 'WindowsServiceNameA', 'executable' => 'a.exe', 'tier' => 'TierA', 'commandline' => 'nil', 'restart' => true
@@ -144,8 +143,8 @@ describe 'appdynamics::dotnet_agent' do
       expect(chef_run).to enable_service('COMSysApp')
       expect(chef_run).to start_service('COMSysApp')
     end
-    it 'creates setup.xml from template' do
-      expect(chef_run).to create_template('C:\Windows\Temp\setup.xml')
+    it 'creates config.xml from template' do
+      expect(chef_run).to create_template('C:\ProgramData\AppDynamics\DotNetAgent\Config\config.xml')
     end
     it 'installs windows_feature IIS-RequestMonitor' do
       expect(chef_run).to install_windows_feature('IIS-RequestMonitor')
@@ -168,23 +167,27 @@ describe 'appdynamics::dotnet_agent' do
     it 'service ExecutableNameB to do nothing' do
       expect(chef_run.service('ExecutableNameB')).to do_nothing
     end    
-# these tests passes on windows OS but not on nix. waiting for chefspec to support latest chef-client code
-#    it 'template C:\Windows\Temp\setup.xml to notify AppDynamics.Agent.Coordinator_service' do
-#      expect(chef_run.template('C:\Windows\Temp\setup.xml')).to notify('windows_service[AppDynamics.Agent.Coordinator_service]').to(:restart).delayed
-#    end
-#    it 'powershell_script Restart IIS does not subscribe AppDynamics.Agent.Coordinator_service' do
-#      expect(chef_run.powershell_script('Restart IIS')).to_not subscribe_to('service[AppDynamics.Agent.Coordinator_service]')
-#    end
-#    it 'powershell_script Restart IIS subscribes to AppDynamics.Agent.Coordinator_service' do
-#      chef_run.node.set['appdynamics']['dotnet_agent']['instrument_iis'] = true
-#      chef_run.converge(described_recipe)
-#      expect(chef_run.powershell_script('Restart IIS')).to subscribe_to('service[AppDynamics.Agent.Coordinator_service]').delayed
-#    end
-#    it 'service WindowsServiceNameA subscribes to service AppDynamics.Agent.Coordinator_service' do
-#      expect(chef_run.service('WindowsServiceNameA')).to subscribe_to('service[AppDynamics.Agent.Coordinator_service]').delayed
-#    end
-#    it 'service WindowsServiceNameA subscribes to package AppDynamics .NET Agent' do
-#      expect(chef_run.service('WindowsServiceNameA')).to subscribe_to('package[AppDynamics .NET Agent]').delayed
-#    end
+    it 'template config.xml to notify AppDynamics.Agent.Coordinator_service' do
+      expect(chef_run.template('C:\ProgramData\AppDynamics\DotNetAgent\Config\config.xml')).to notify('service[AppDynamics.Agent.Coordinator_service]').to(:restart).delayed
+    end
+    it 'powershell_script Restart IIS does not subscribe AppDynamics.Agent.Coordinator_service' do
+      expect(chef_run.powershell_script('Restart IIS')).to_not subscribe_to('service[AppDynamics.Agent.Coordinator_service]')
+    end
+    it 'powershell_script Restart IIS subscribes to AppDynamics.Agent.Coordinator_service' do
+      chef_run.node.set['appdynamics']['dotnet_agent']['instrument_iis'] = true
+      chef_run.converge(described_recipe)
+      expect(chef_run.powershell_script('Restart IIS')).to subscribe_to('service[AppDynamics.Agent.Coordinator_service]').delayed
+    end
+    it 'powershell_script Restart IIS subscribes to package AppDynamics .NET Agent' do
+      chef_run.node.set['appdynamics']['dotnet_agent']['instrument_iis'] = true
+      chef_run.converge(described_recipe)
+      expect(chef_run.powershell_script('Restart IIS')).to subscribe_to('package[AppDynamics .NET Agent]').delayed
+    end
+    it 'service AppDynamics.Agent.Coordinator_service notifies service WindowsServiceNameA' do
+      expect(chef_run.service('AppDynamics.Agent.Coordinator_service')).to notify('service[WindowsServiceNameA]').delayed
+    end
+    it 'package AppDynamics .NET Agent notifies service WindowsServiceNameA' do
+      expect(chef_run.package('AppDynamics .NET Agent')).to notify('service[WindowsServiceNameA]').delayed
+    end
   end
 end

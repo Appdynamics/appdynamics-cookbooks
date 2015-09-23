@@ -26,11 +26,14 @@ describe windows_feature('IIS-RequestMonitor') do
     expect(subject).to be_installed
   end
 end
-describe file('c:\\windows\\Temp\\setup.xml') do
+describe file('C:\\ProgramData\\AppDynamics\\DotNetAgent\\Config\\config.xml') do
   it 'is a file' do
     expect(subject).to be_file
   end
-  it { should contain 'automatic enabled="true"' }
+  it { should contain 'test-app' }
+  it { should contain 'controller-host' }
+  it { should contain 'controller-accesskey' }
+  it { should contain 'automatic' }
   it { should contain 'svchost.exe' }
   it { should contain 'msdtc.exe' }
   it { should contain 'command-line="-k iissvcs"' }

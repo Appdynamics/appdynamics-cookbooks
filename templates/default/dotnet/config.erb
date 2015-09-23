@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appdynamics-agent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <controller host="<%= @controller_host %>" port="<%= @controller_port %>" ssl="<% if @controller_ssl %>true<% else %>false<% end %>">
+    <application name="<%= @app_name %>" />
+    <% unless @controller_user.nil? %><account name="<%= @controller_user %>" password="<%= @controller_accesskey %>" /><% end %>
+    <% unless @proxy_host.nil? %><proxy host="<%= @proxy_host %>" port="<%= @proxy_port %>" enabled="true"/><% end %>
+  </controller>
+  <machine-agent />
+  <app-agents>
+    <IIS>
+      <% if @instrument_iis -%><automatic />%><% end -%>
+    </IIS>
+    <% unless @standalone_apps.nil? %> 
+    <standalone-applications> 
+    <% @standalone_apps.each do |app| %>
+      <standalone-application executable="<%= app[:executable]%>" <% unless app[:commandline].nil? %> command-line="<%= app[:commandline]%>" <% end %>>
+        <tier name="<%= app[:tier]%>" />
+      </standalone-application>
+    <% end %>
+    </standalone-applications>
+    <% end %>
+  </app-agents>
+</appdynamics-agent>

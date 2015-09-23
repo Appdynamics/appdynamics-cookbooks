@@ -1,9 +1,15 @@
----
 driver:
-  name: vagrant
-  gui: false
-  customize:
-    memory: 2048
+  name: ec2
+  aws_ssh_key_id: <%= ENV['AWS_SSH_KEY'] %>
+  security_group_ids:  <%= ENV['AWS_SECURITY_GROUPS'] %>
+  region: <%= ENV['AWS_REGION'] %>
+  availability_zone: <%= ENV['AWS_AVAILABILITY_ZONE'] %>
+  require_chef_omnibus: true
+  subnet_id: <%= ENV['AWS_SUBNET'] %>
+  associate_public_ip: false
+  interface: private
+  tags:
+    OWNER: <%= ENV['AWS_OWNER_TAG'] %>
 
 provisioner:
   name: chef_zero
@@ -25,40 +31,53 @@ provisioner:
           user: http-proxy-user
           password_file: /tmp/foo/bar
 
+transport:
+  ssh_key: ~/.ssh/<%= ENV['AWS_SSH_KEY'] %>.pem
+
 platforms:
-  - name: ubuntu-12.04
-  - name: centos-6.7
-  - name: windows2012r2
-    driver_config:
-      box: opentable/win-2012r2-standard-amd64-nocm
-      network:
-        - ["forwarded_port", {guest: 3389, host: 33389}]
-  - name: windows2008r2
-    driver_config:
-      box: opentable/win-2008r2-standard-amd64-nocm
-      network:
-        - ["forwarded_port", {guest: 3389, host: 33390}]
+  - name: centos
+    driver:
+      image_id: <%= ENV['AWS_CENTOS_AMI_ID'] %>
+      instance_type: <%= ENV['LINUX_INSTANCE_SIZE'] %>
+    transport:
+      username: <%= ENV['AWS_CENTOS_USERNAME'] %>
+  - name: ubuntu
+    driver:
+      image_id: <%= ENV['AWS_UBUNTU_AMI_ID'] %>
+      instance_type: <%= ENV['LINUX_INSTANCE_SIZE'] %>
+    transport:
+      username: <%= ENV['AWS_UBUNTU_USERNAME'] %>
+  - name: windows-2012r2
+    driver:
+      image_id: <%= ENV['AWS_WINDOWS2012R2_AMI_ID'] %>
+      instance_type: <%= ENV['WINDOWS_INSTANCE_SIZE'] %>
+    transport:
+      name: winrm
+  - name: windows-2008r2
+    driver:
+      image_id: <%= ENV['AWS_WINDOWS2008R2_AMI_ID'] %>
+      instance_type: <%= ENV['WINDOWS_INSTANCE_SIZE'] %>
+    transport:
+      name: winrm
 
 suites:
   - name: nodejs_agent
     run_list:
-      - recipe[apt::default]
       - recipe[nodejs::default]
       - recipe[appdynamics::nodejs_agent]
     attributes:
       nodejs:
         install_method: source
+        version: '4.1.3'
       appdynamics:
         nodejs_agent:
-          version: '4.1.3'
           path: /home/vagrant
     excludes:
-      - windows2012r2
-      - windows2008r2
+      - windows-2012r2
+      - windows-2008r2
 
   - name: python_agent
     run_list:
-      - recipe[apt::default]
       - recipe[python::default]
       - recipe[appdynamics::python_agent]
     attributes:
@@ -67,8 +86,8 @@ suites:
           debug: true
           dir: '/opt/pyagent'
     excludes:
-    - windows2012r2
-    - windows2008r2
+      - windows-2012r2
+      - windows-2008r2
 
   - name: machine_agent
     run_list:
@@ -76,8 +95,8 @@ suites:
       - recipe[java::default]
       - recipe[appdynamics::machine_agent]
     excludes:
-    - windows2012r2
-    - windows2008r2
+      - windows-2012r2
+      - windows-2008r2
 
   - name: java_agent
     run_list:
@@ -91,8 +110,8 @@ suites:
         java_agent:
           owner: someuser
     excludes:
-    - windows2012r2
-    - windows2008r2
+      - windows-2012r2
+      - windows-2008r2
 
   - name: dotnet_agent
     run_list:
@@ -107,5 +126,5 @@ suites:
       config:
         log_level: :debug
     excludes:
-      - ubuntu-12.04
-      - centos-6.7
+      - ubuntu
+      - centos
