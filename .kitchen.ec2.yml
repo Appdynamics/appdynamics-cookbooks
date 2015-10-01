@@ -32,31 +32,35 @@ provisioner:
           password_file: /tmp/foo/bar
 
 transport:
-  ssh_key: ~/.ssh/<%= ENV['AWS_SSH_KEY'] %>.pem
+  ssh_key: <%= ENV['SSH_KEY_PATH'] %><%= ENV['AWS_SSH_KEY'] %>.pem
 
 platforms:
   - name: centos
     driver:
       image_id: <%= ENV['AWS_CENTOS_AMI_ID'] %>
       instance_type: <%= ENV['LINUX_INSTANCE_SIZE'] %>
+      user_data: <%= ENV['LINUX_USER_DATA_PATH'] %>
     transport:
       username: <%= ENV['AWS_CENTOS_USERNAME'] %>
   - name: ubuntu
     driver:
       image_id: <%= ENV['AWS_UBUNTU_AMI_ID'] %>
       instance_type: <%= ENV['LINUX_INSTANCE_SIZE'] %>
+      user_data: <%= ENV['LINUX_USER_DATA_PATH'] %>
     transport:
       username: <%= ENV['AWS_UBUNTU_USERNAME'] %>
   - name: windows-2012r2
     driver:
       image_id: <%= ENV['AWS_WINDOWS2012R2_AMI_ID'] %>
       instance_type: <%= ENV['WINDOWS_INSTANCE_SIZE'] %>
+      user_data: <%= ENV['WINDOWS_USER_DATA_PATH'] %>
     transport:
       name: winrm
   - name: windows-2008r2
     driver:
       image_id: <%= ENV['AWS_WINDOWS2008R2_AMI_ID'] %>
       instance_type: <%= ENV['WINDOWS_INSTANCE_SIZE'] %>
+      user_data: <%= ENV['WINDOWS_USER_DATA_PATH'] %>
     transport:
       name: winrm
 
