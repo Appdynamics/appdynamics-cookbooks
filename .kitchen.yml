@@ -96,6 +96,7 @@ suites:
 
   - name: dotnet_agent
     run_list:
+      - recipe[test-helper::default]
       - recipe[iis]
       - recipe[appdynamics::dotnet_agent]
     attributes:

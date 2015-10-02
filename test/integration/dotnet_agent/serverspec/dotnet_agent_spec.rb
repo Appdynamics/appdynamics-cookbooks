@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe file('c:\\windows\\Temp') do
+describe file("#{$node['kernel']['os_info']['windows_directory']}\\Temp") do
   it 'is a directory' do
     expect(subject).to be_directory
   end
@@ -26,7 +26,7 @@ describe windows_feature('IIS-RequestMonitor') do
     expect(subject).to be_installed
   end
 end
-describe file('C:\\ProgramData\\AppDynamics\\DotNetAgent\\Config\\config.xml') do
+describe file("#{$node['kernel']['os_info']['system_drive']}\\ProgramData\\AppDynamics\\DotNetAgent\\Config\\config.xml") do
   it 'is a file' do
     expect(subject).to be_file
   end
