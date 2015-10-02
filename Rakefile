@@ -3,7 +3,7 @@ gem 'rubocop', '0.33.0'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'foodcritic'
-require 'kitchen'
+
 
 # Style tests. Rubocop and Foodcritic
 namespace :style do
@@ -30,6 +30,7 @@ RSpec::Core::RakeTask.new(:spec)
 namespace :integration do
   desc 'Run Test Kitchen with Vagrant'
   task :vagrant do
+    require 'kitchen'
     Kitchen.logger = Kitchen.default_file_logger
     Kitchen::Config.new.instances.each do |instance|
       instance.test(:always)
