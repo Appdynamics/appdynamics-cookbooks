@@ -150,7 +150,7 @@ describe 'appdynamics::dotnet_agent' do
       expect(chef_run).to install_windows_feature('IIS-RequestMonitor')
     end
     it 'installs package AppDynamics .NET Agent' do
-      expect(chef_run).to install_package('AppDynamics .NET Agent')
+      expect(chef_run).to install_windows_package('AppDynamics .NET Agent')
     end
     it 'enables & starts AppDynamics.Agent.Coordinator_service' do
       expect(chef_run).to enable_service('AppDynamics.Agent.Coordinator_service')
