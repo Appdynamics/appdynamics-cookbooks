@@ -77,7 +77,7 @@ if agent['standalone_apps']
     service apps['name'] do # ~FC022
       action :nothing
       subscribes :restart, 'service[AppDynamics.Agent.Coordinator_service]', :delayed
-      subscribes :restart, 'package[AppDynamics .NET Agent]', :delayed
+      subscribes :restart, 'windows_package[AppDynamics .NET Agent]', :delayed
       only_if { apps['restart'] == true }
     end
   end
@@ -92,7 +92,7 @@ if agent['instrument_iis'] == true
     EOH
     action :nothing
     subscribes :run, 'service[AppDynamics.Agent.Coordinator_service]', :delayed
-    subscribes :run, 'package[AppDynamics .NET Agent]', :delayed
+    subscribes :run, 'windows_package[AppDynamics .NET Agent]', :delayed
   end
 else
   Chef::Log.warn('Not performing IISReset because instrument_iis does not equal true.')

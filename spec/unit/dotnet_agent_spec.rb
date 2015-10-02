@@ -88,13 +88,13 @@ describe 'appdynamics::dotnet_agent' do
     it 'powershell_script Restart IIS subscribes to package AppDynamics .NET Agent' do
       chef_run.node.set['appdynamics']['dotnet_agent']['instrument_iis'] = true
       chef_run.converge(described_recipe)
-      expect(chef_run.powershell_script('Restart IIS')).to subscribe_to('package[AppDynamics .NET Agent]').delayed
+      expect(chef_run.powershell_script('Restart IIS')).to subscribe_to('windows_package[AppDynamics .NET Agent]').delayed
     end
     it 'service AppDynamics.Agent.Coordinator_service notifies service WindowsServiceNameA' do
       expect(chef_run.service('AppDynamics.Agent.Coordinator_service')).to notify('service[WindowsServiceNameA]').delayed
     end
     it 'package AppDynamics .NET Agent notifies service WindowsServiceNameA' do
-      expect(chef_run.package('AppDynamics .NET Agent')).to notify('service[WindowsServiceNameA]').delayed
+      expect(chef_run.windows_package('AppDynamics .NET Agent')).to notify('service[WindowsServiceNameA]').delayed
     end
   end
   context 'win2012r2' do
@@ -181,13 +181,13 @@ describe 'appdynamics::dotnet_agent' do
     it 'powershell_script Restart IIS subscribes to package AppDynamics .NET Agent' do
       chef_run.node.set['appdynamics']['dotnet_agent']['instrument_iis'] = true
       chef_run.converge(described_recipe)
-      expect(chef_run.powershell_script('Restart IIS')).to subscribe_to('package[AppDynamics .NET Agent]').delayed
+      expect(chef_run.powershell_script('Restart IIS')).to subscribe_to('windows_package[AppDynamics .NET Agent]').delayed
     end
     it 'service AppDynamics.Agent.Coordinator_service notifies service WindowsServiceNameA' do
       expect(chef_run.service('AppDynamics.Agent.Coordinator_service')).to notify('service[WindowsServiceNameA]').delayed
     end
     it 'package AppDynamics .NET Agent notifies service WindowsServiceNameA' do
-      expect(chef_run.package('AppDynamics .NET Agent')).to notify('service[WindowsServiceNameA]').delayed
+      expect(chef_run.windows_package('AppDynamics .NET Agent')).to notify('service[WindowsServiceNameA]').delayed
     end
   end
 end
