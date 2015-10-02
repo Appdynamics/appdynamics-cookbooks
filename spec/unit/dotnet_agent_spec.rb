@@ -54,7 +54,7 @@ describe 'appdynamics::dotnet_agent' do
       expect(chef_run).to install_windows_feature('IIS-RequestMonitor')
     end
     it 'installs package AppDynamics .NET Agent' do
-      expect(chef_run).to install_package('AppDynamics .NET Agent').with(
+      expect(chef_run).to install_windows_package('AppDynamics .NET Agent').with(
         'source' => 'https://packages.appdynamics.com/dotnet/4.1.3.0/dotNetAgentSetup64-4.1.3.0.msi'
       )
     end
