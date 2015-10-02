@@ -43,7 +43,7 @@ windows_feature 'IIS-RequestMonitor' do
 end
 
 # Installing the agent
-package 'AppDynamics .NET Agent' do
+windows_package 'AppDynamics .NET Agent' do
   source package_source
   options "/l*v \"#{install_log_file}\" INSTALLDIR=\"#{install_directory}\""
 end
