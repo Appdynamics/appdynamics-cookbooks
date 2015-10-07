@@ -3,25 +3,13 @@ chef_gem 'activesupport'
 require 'pathname'
 require 'active_support/core_ext/hash/deep_merge'
 
-case node['platform_family']
-when 'debian', 'rhel', 'fedora'
-  temp_path = '/tmp/serverspec/'
-  directory temp_path do
-    recursive true
-  end
+directory node['test-helper']['node_attributes_path'] do
+  recursive true
+end
 
-  file "#{temp_path}node.json" do
-    owner 'root'
-    mode '0400'
-  end
-when 'windows'
-  temp_path = 'c:\\windows\\temp\\serverspec\\'
-  directory temp_path do
-    recursive true
-  end
-
-  file "#{temp_path}node.json" do
-  end
+file "#{node['test-helper']['node_attributes_path']}node.json" do
+  owner 'root' unless node['platform_family'] == 'windows'
+  mode '0400' unless node['platform_family'] == 'windows'
 end
 
 log "Dumping attributes to 'node.json'"
@@ -42,6 +30,6 @@ ruby_block 'dump_node_attributes' do
     recipe_json << " \] }"
     attrs = attrs.deep_merge(JSON.parse(recipe_json))
 
-    File.open("#{temp_path}node.json", 'w') { |file| file.write(JSON.pretty_generate(attrs)) }
+    File.open("#{node['test-helper']['node_attributes_path']}node.json", 'w') { |file| file.write(JSON.pretty_generate(attrs)) }
   end
 end

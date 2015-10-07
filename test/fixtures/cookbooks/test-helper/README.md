@@ -20,32 +20,25 @@ suites:
       - recipe[test-helper]
       - recipe[<<<<>>>>>]
 ```
-
-
 ##Usage with Server Spec
-Linux: Update / Configure `spec_helper.rb` to contain:
+Update / Configure `spec_helper.rb` to contain:
 ```
 require 'serverspec'
 require 'pathname'
 require 'json'
 
-set :backend, :exec
+if ENV['OS'] == 'Windows_NT'
+  set :backend, :cmd
+  # On Windows, set the target host's OS explicitely
+  set :os, :family => 'windows'
+  $node = ::JSON.parse(File.read('c:\windows\temp\serverspec\node.json'))
+else
+  set :backend, :exec
+  $node = ::JSON.parse(File.read('/tmp/serverspec/node.json'))
+end
 
-set :path, '/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:$PATH'
-$node = ::JSON.parse(File.read('/tmp/serverspec/node.json'))
+set :path, '/sbin:/usr/local/sbin:$PATH' unless os[:family] == 'windows'
 ```
-Windows: Update / Configure `spec_helper.rb` to contain:
-```
-require 'serverspec'
-require 'pathname'
-require 'json'
-
-set :backend, :cmd
-set :os, :family => 'windows'
-
-$node = ::JSON.parse(File.read('c:\windows\temp\serverspec\node.json'))
-```
-
 #####Usage in tests:
 ```
 describe file("#{$node['appdynamics']['java_agent']['install_dir']}/javaagent/conf") do
