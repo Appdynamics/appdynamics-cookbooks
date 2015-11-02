@@ -3,6 +3,10 @@ appdynamics CHANGELOG
 
 This file is used to list changes made in each version of the appdynamics cookbook.
 
+0.2.4
+-----
+- [nmcginnis] - Removed erroneous characters in dotnet template  which causes issues with auto instrumentation.
+
 0.2.3
 -----
 - [akemner] - dynamic integration testing for windows with fixture cookbook test-helper
