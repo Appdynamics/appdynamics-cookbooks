@@ -1,4 +1,6 @@
-chef_gem 'activesupport'
+chef_gem 'activesupport' do
+  version '4.2.7.1' # http://bit.ly/2czDmhs
+end
 
 require 'pathname'
 require 'active_support/core_ext/hash/deep_merge'
