@@ -12,8 +12,8 @@ depends 'windows', '~> 1.44.3'
 depends 'python', '~> 1.4.6'
 depends 'nodejs', '~> 2.4.4'
 depends 'java', '~> 1.42.0'
-depends 'apt', '~> 4.0.2'
-depends 'powershell', '~> 5.0.0'
+depends 'apt', '~> 3.0'
+depends 'powershell', '~> 3.0.0'
 depends 'ark', '~> 1.1.0'
 
 # Red Hat
