@@ -3,6 +3,10 @@ appdynamics CHANGELOG
 
 This file is used to list changes made in each version of the appdynamics cookbook.
 
+0.3.0
+-----
+- [spuder] - Pin dependency versions
+
 0.2.4
 -----
 - [nmcginnis] - Removed erroneous characters in dotnet template  which causes issues with auto instrumentation.
@@ -33,8 +37,8 @@ This file is used to list changes made in each version of the appdynamics cookbo
 
 0.1.1
 -----
-- [akemner] - dotnet_agent - add standalone/windows service instrumentation support, includes chefspec and serverspec test for the changes. 
+- [akemner] - dotnet_agent - add standalone/windows service instrumentation support, includes chefspec and serverspec test for the changes.
 
 0.1.0
 -----
-- [akemner] - bump metadata version, add changelog.md, resolve FoodCritic/Rubocop failures for all files, add unit(chefspec) & integration(serverspec) testing for dotnet_agent.rb. remove checksum, notify to template resource so AppDynamics Agent Coordinator restart if template gets changed, subscribe IIS Restart script to AppDynamics Agent Coordinator. 
+- [akemner] - bump metadata version, add changelog.md, resolve FoodCritic/Rubocop failures for all files, add unit(chefspec) & integration(serverspec) testing for dotnet_agent.rb. remove checksum, notify to template resource so AppDynamics Agent Coordinator restart if template gets changed, subscribe IIS Restart script to AppDynamics Agent Coordinator.
