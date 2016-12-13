@@ -75,6 +75,7 @@ The `python_agent` recipe has some additional attributes you may set:
 The `java_agent` recipe has some additional attributes you may set:
 
 * `node['appdynamics']['java_agent']['source']`
+* `node['appdynamics']['java_agent']['version']`
 * `node['appdynamics']['java_agent']['checksum']` - The sha256 checksum of the installer. Required to prevent cookbook from redownloading agent installer every chef run. 
 * `node['appdynamics']['java_agent']['zip']`
 * `node['appdynamics']['java_agent']['install_dir']`
