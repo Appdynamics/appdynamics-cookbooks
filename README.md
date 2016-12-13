@@ -69,6 +69,18 @@ The `python_agent` recipe has some additional attributes you may set:
 * `node['appdynamics']['python_agent']['dir']` - Set to the path you want the agent to use for storing its runtime data. It defaults to `/tmp/appd`.
 * `node['appdynamics']['python_agent']['source']` - Specify a full URL here if you wish to download the Python agent from another location than the default packages site.
 
+
+#### Java Agent Configuration Attributes
+
+The `java_agent` recipe has some additional attributes you may set:
+
+* `node['appdynamics']['java_agent']['source']`
+* `node['appdynamics']['java_agent']['checksum']` - The sha256 checksum of the installer. Required to prevent cookbook from redownloading agent installer every chef run. 
+* `node['appdynamics']['java_agent']['zip']`
+* `node['appdynamics']['java_agent']['install_dir']`
+* `node['appdynamics']['java_agent']['owner']`
+* `node['appdynamics']['java_agent']['group']`
+
 ## Usage
 
 ### Instrumenting a Python WSGI Application
