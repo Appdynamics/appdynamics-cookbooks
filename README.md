@@ -131,7 +131,6 @@ The `dotnet_agent` recipe has some additional attributes you may set:
 **Step 1.** Set the following node attributes (documented above):
 
 * `node['appdynamics']['version']`
-* `node['appdynamics']['checksum']['checksum']`
 * `node['appdynamics']['app_name']`
 * `node['appdynamics']['controller']['host']`
 * `node['appdynamics']['controller']['port']`
