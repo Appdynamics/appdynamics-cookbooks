@@ -21,7 +21,7 @@ remote_file node['appdynamics']['java_agent']['zip'] do
 end
 
 ark 'javaagent' do
-  url "file://#{node['appdynamics']['java_agent']['zip']}"
+  url "file:///#{node['appdynamics']['java_agent']['zip']}"
   path agent['install_dir']
   owner agent['owner']
   action :put
