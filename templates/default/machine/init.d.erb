@@ -18,18 +18,20 @@ fi
 INSTALL_DIR="<%= @install_dir %>"
 RETVAL=0
 PROG="$INSTALL_DIR/run.sh"
+pid_file="<%= @pid_file %>"
 
 start() {
     echo -n $"Starting AppDynamics machine agent:"
-    "$PROG"
+    daemon --pidfile=${pid_file} ${PROG}
     RETVAL=$?
     echo
 }
 
 stop() {
     echo -n $"Stopping AppDynamics machine agent:"
-    killproc "$PROG" -TERM
+    killproc -p ${pid_file} "$PROG" -TERM
     RETVAL=$?
+    [ $? -eq 0 ] && rm -f ${pid_file}
     echo
 }
 

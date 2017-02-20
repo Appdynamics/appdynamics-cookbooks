@@ -1,2 +1,3 @@
 #!/bin/sh
 "<%= @java %>" <%= @java_params %> -jar "<%= @install_dir %>/machineagent.jar" &
+echo $! > <%= @pid_file %>
