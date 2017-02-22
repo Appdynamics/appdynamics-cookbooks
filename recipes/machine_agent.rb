@@ -51,14 +51,16 @@ remote_file agent_zip do
 end
 
 template "#{agent['install_dir']}/run.sh" do
-  source 'machine/run.sh.erb'
+  cookbook agent['run_sh']['cookbook']
+  source agent['run_sh']['source']
   owner agent['owner']
   group agent['group']
   mode '0744'
   variables(
     :java => agent['java'],
     :java_params => agent['java_params'],
-    :install_dir => agent['install_dir']
+    :install_dir => agent['install_dir'],
+    :pid_file => agent['pid_file']
   )
 end
 
@@ -68,9 +70,11 @@ execute 'unzip-appdynamics-machine-agent' do
 end
 
 template agent['init_script'] do
-  source 'machine/init.d.erb'
+  cookbook agent['init']['cookbook']
+  source agent['init']['source']
   variables(
-    :install_dir => agent['install_dir']
+    :install_dir => agent['install_dir'],
+    :pid_file => agent['pid_file']
   )
   owner agent['owner']
   group agent['group']
