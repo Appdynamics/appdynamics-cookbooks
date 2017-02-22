@@ -3,13 +3,25 @@ appdynamics CHANGELOG
 
 This file is used to list changes made in each version of the appdynamics cookbook.
 
+0.3.3
+-----
+- [jcejohnson] - Fix init script for Machine Agent
+
+0.3.2
+-----
+- [spuder] - Fix file URL schemas for Windows
+
+0.3.1
+-----
+- [Meldryn] - Pin apt version to be more specific
+
 0.3.0
 -----
 - [spuder] - Pin dependency versions
 
 0.2.4
 -----
-- [nmcginnis] - Removed erroneous characters in dotnet template  which causes issues with auto instrumentation.
+- [nmcginnis] - Removed erroneous characters in dotnet template which causes issues with auto instrumentation.
 
 0.2.3
 -----
