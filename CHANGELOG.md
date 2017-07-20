@@ -3,6 +3,10 @@ appdynamics CHANGELOG
 
 This file is used to list changes made in each version of the appdynamics cookbook.
 
+0.3.4
+-----
+- [dkoepke] - Switch from deprecated `python` cookbook to `poise-python`
+
 0.3.3
 -----
 - [jcejohnson] - Fix init script for Machine Agent

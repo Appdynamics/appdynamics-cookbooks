@@ -1,5 +1,5 @@
 name              'appdynamics'
-version           '0.3.3'
+version           '0.3.4'
 
 maintainer        'AppDynamics'
 maintainer_email  'help@appdynamics.com'
@@ -9,7 +9,7 @@ source_url        'https://github.com/appdynamics/appdynamics-cookbooks'        
 issues_url        'https://github.com/appdynamics/appdynamics-cookbooks/issues' if respond_to?(:issues_url)
 
 depends 'windows', '~> 1.44.3'
-depends 'python', '~> 1.4.6'
+depends 'poise-python', '~> 1.6.0'
 depends 'nodejs', '~> 2.4.4'
 depends 'java', '~> 1.42.0'
 depends 'apt', '~> 3.0.0'
