@@ -14,7 +14,7 @@ Learn more about AppDynamics at:
 
 ## Requirements
 
-* Chef >= 0.10.0
+* Chef >= 0.12.5
 * poise-python cookbook
 * nodejs cookbook
 * windows cookbook
