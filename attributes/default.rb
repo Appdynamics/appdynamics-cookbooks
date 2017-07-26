@@ -2,7 +2,7 @@ default['appdynamics']['version'] = nil
 
 default['appdynamics']['app_name'] = nil
 default['appdynamics']['tier_name'] = nil
-default['appdynamics']['node_name'] = "#{node['hostname']}"
+default['appdynamics']['node_name'] = node['hostname']
 
 default['appdynamics']['controller']['host'] = nil
 default['appdynamics']['controller']['port'] = nil
