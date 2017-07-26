@@ -3,6 +3,11 @@ appdynamics CHANGELOG
 
 This file is used to list changes made in each version of the appdynamics cookbook.
 
+0.4.0
+-----
+- [dkoepke] - Switch from deprecated `python` cookbook to `poise-python`
+- [dkoepke] - Bump versions, require at least Chef 12.5
+
 0.3.3
 -----
 - [jcejohnson] - Fix init script for Machine Agent

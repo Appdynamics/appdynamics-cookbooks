@@ -12,17 +12,16 @@ unless package_source
   package_source = "#{node['appdynamics']['packages_site']}/machine/#{version}/"
 
   if agent['use_bundled_package']
-    package_source << 'machineagent-bundle-'
-    if node['kernel']['machine'] == 'x86_64'
-      package_source << '64bit-'
-    else
-      package_source << '32bit-'
-    end
+    bitness = if node['kernel']['machine'] == 'x86_64'
+                '64bit'
+              else
+                '32bit'
+              end
 
-    package_source << value_for_platform_family(
-      %w(mswin windows) => 'windows',
-      %w(darwin mac_os_x) => 'osx',
-      %w(omnios opensolaris solaris solaris2 smartos) => 'solaris',
+    package_source << 'machineagent-bundle-' << bitness << '-' << value_for_platform_family(
+      %w[mswin windows] => 'windows',
+      %w[darwin mac_os_x] => 'osx',
+      %w[omnios opensolaris solaris solaris2 smartos] => 'solaris',
       'default' => 'linux'
     )
   else
@@ -107,6 +106,6 @@ template "#{agent['install_dir']}/conf/controller-info.xml" do
 end
 
 service 'appdynamics_machine_agent' do
-  supports [:start, :stop, :restart]
-  action [:enable, :start]
+  supports %i[start stop restart]
+  action %i[enable start]
 end
