@@ -2,9 +2,9 @@ source 'https://rubygems.org'
 
 gem 'rake'
 gem 'berkshelf'
-gem 'chef', '~> 12.5'
+gem 'chef'
 gem 'chefspec'
-gem 'rubocop', '0.33.0'
+gem 'rubocop'
 gem 'rspec'
 gem 'foodcritic'
 
