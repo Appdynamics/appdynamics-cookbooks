@@ -27,6 +27,7 @@ provisioner:
 
 platforms:
   - name: ubuntu-12.04
+  - name: ubuntu-16.04
   - name: centos-6.7
   - name: windows2012r2
     driver_config:
@@ -59,10 +60,10 @@ suites:
   - name: python_agent
     run_list:
       - recipe[apt::default]
-      - recipe[python::default]
       - recipe[appdynamics::python_agent]
     attributes:
       appdynamics:
+        version: '4.3.9.0'
         python_agent:
           debug: true
           dir: '/opt/pyagent'
