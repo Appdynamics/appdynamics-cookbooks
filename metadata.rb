@@ -8,7 +8,7 @@ long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 source_url        'https://github.com/appdynamics/appdynamics-cookbooks'        if respond_to?(:source_url)
 issues_url        'https://github.com/appdynamics/appdynamics-cookbooks/issues' if respond_to?(:issues_url)
 
-depends 'windows', '~> 1.44.3'
+depends 'windows', '>= 1.44.3'
 depends 'python', '~> 1.4.6'
 depends 'nodejs', '~> 2.4.4'
 depends 'java', '~> 1.42.0'
