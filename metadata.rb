@@ -1,5 +1,5 @@
 name              'appdynamics'
-version           '0.4.0'
+version           '0.4.1'
 
 maintainer        'AppDynamics'
 maintainer_email  'help@appdynamics.com'
@@ -8,12 +8,12 @@ long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 source_url        'https://github.com/appdynamics/appdynamics-cookbooks'        if respond_to?(:source_url)
 issues_url        'https://github.com/appdynamics/appdynamics-cookbooks/issues' if respond_to?(:issues_url)
 
-depends 'windows', '>= 1.44.3'
-depends 'python', '~> 1.4.6'
+depends 'windows', '~> 3.4.1'
+depends 'poise-python', '~> 1.6.0'
 depends 'nodejs', '~> 2.4.4'
 depends 'java', '~> 1.42.0'
 depends 'apt', '~> 3.0.0'
-depends 'powershell', '~> 3.0.0'
+depends 'powershell', '~> 6.1.1'
 depends 'ark', '~> 1.1.0'
 
 # Red Hat

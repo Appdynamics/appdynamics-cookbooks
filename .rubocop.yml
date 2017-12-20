@@ -33,7 +33,7 @@ Style/SignalException:
   Enabled: false
 
 # We enjoy parameters lining up for visual comprehension
-Style/SingleSpaceBeforeFirstArg:
+Layout/SpaceBeforeFirstArg:
   Enabled: false
 
 # Only enforce a wordlist for 5 or longer lists.

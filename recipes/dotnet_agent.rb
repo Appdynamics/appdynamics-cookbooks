@@ -24,17 +24,17 @@ end
 
 # MSDTC Service
 service 'MSDTC' do
-  action [:enable, :start]
+  action %i[enable start]
 end
 
 # WMI Service
 service 'Winmgmt' do
-  action [:enable, :start]
+  action %i[enable start]
 end
 
 # COM+ Service is not required in 4.1+
 service 'COMSysApp' do
-  action [:enable, :start]
+  action %i[enable start]
   only_if { version < '4.1' }
 end
 
@@ -69,7 +69,7 @@ template config do
 end
 
 service 'AppDynamics.Agent.Coordinator_service' do
-  action [:enable, :start]
+  action %i[enable start]
 end
 
 if agent['standalone_apps']

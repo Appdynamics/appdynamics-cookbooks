@@ -1,5 +1,6 @@
 chef_gem 'activesupport' do
-  version '4.2.7.1' # http://bit.ly/2czDmhs
+  version '5.1.4' # http://bit.ly/2czDmhs
+  compile_time true
 end
 
 require 'pathname'
