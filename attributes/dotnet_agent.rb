@@ -1,4 +1,5 @@
 default['appdynamics']['dotnet_agent']['version'] = nil
+default['appdynamics']['dotnet_agent']['checksum'] = nil
 default['appdynamics']['dotnet_agent']['source'] = nil
 default['appdynamics']['dotnet_agent']['install_dir'] = 'C:\Program Files\Appdynamics'
 default['appdynamics']['dotnet_agent']['logfiles_dir'] = 'C:\DotNetAgent\Logs'

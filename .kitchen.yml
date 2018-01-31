@@ -102,6 +102,8 @@ suites:
     attributes:
       appdynamics:
         dotnet_agent:
+          version: 4.1.8.9
+          checksum: fb33112504597e1a466b016510cfe41e19174e31637baac1f4d631583720c095
           instrument_iis: true
           standalone_apps: [{name: W3SVC, executable: svchost.exe, tier: w3svc, commandline: -k iissvcs, restart: false },{name: MSDTC, executable: msdtc.exe, tier: msdtc, commandline: , restart: true}]
     chef_client:

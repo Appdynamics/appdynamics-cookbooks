@@ -130,6 +130,7 @@ default_attributes (
 The `dotnet_agent` recipe has some additional attributes you may set:
 
 * `node['appdynamics']['dotnet_agent']['version']` - The version of the .net agent you wish to use. If not set, `node['appdynamics']['version']` is used.
+* `node['appdynamics']['dotnet_agent']['checksum']` - Sha256 hash of file. Prevents cookbook from re-downloading agent every chef run. (e.g `Get-FileHash dotNetAgentSetup64-4.1.8.9.msi`)
 * `node['appdynamics']['dotnet_agent']['install_dir']` - Set to the path you want the agent to be installed at, it defaults to `C:\Program Files\Appdynamics`.
 * `node['appdynamics']['dotnet_agent']['source']` - base url for downloading the agent from.
 * `node['appdynamics']['dotnet_agent']['logfiles_dir']` - Set the logfile directory. defaults to `C:\DotNetAgent\Logs`.
@@ -148,6 +149,7 @@ The `dotnet_agent` recipe has some additional attributes you may set:
 * `node['appdynamics']['controller']['port']`
 * `node['appdynamics']['controller']['user']`
 * `node['appdynamics']['controller']['accesskey']`
+* `node['appdynamics']['dotnet_agent']['checksum']`
 * `node['appdynamics']['dotnet_agent']['instrument_iis']`
 * `node['appdynamics']['dotnet_agent']['standalone_apps']`
 

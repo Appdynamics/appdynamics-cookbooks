@@ -45,6 +45,7 @@ end
 # Installing the agent
 windows_package 'AppDynamics .NET Agent' do
   source package_source
+  checksum node['appdynamics']['dotnet_agent']['checksum'] unless node['appdynamics']['dotnet_agent']['checksum'].nil?
   options "/l*v \"#{install_log_file}\" INSTALLDIR=\"#{install_directory}\""
 end
 
