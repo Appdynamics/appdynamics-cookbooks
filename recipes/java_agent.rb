@@ -24,6 +24,7 @@ ark 'javaagent' do
   url "file:///#{node['appdynamics']['java_agent']['zip']}"
   path agent['install_dir']
   owner agent['owner']
+  group agent['group']
   action :put
 end
 
