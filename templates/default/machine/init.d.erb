@@ -35,6 +35,13 @@ stop() {
     echo
 }
 
+is_running() {
+    [ -f "$pid_file" ] && ps -p `get_pid` > /dev/null 2>&1
+}
+get_pid() {
+    cat "$pid_file"
+}
+
 case "$1" in
     start)
         start
@@ -46,8 +53,15 @@ case "$1" in
         stop
         start
         ;;
+    status)
+       if is_running(); then 
+         echo "Running"
+       else
+         echo "Not running"
+         exit 1
+       fi
     *)
-        echo $"Usage: $0 {start|stop|restart}"
+        echo $"Usage: $0 {start|stop|restart|status}"
         RETVAL=1
         ;;
 esac
