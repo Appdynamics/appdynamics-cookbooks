@@ -7,6 +7,7 @@ default['appdynamics']['machine_agent']['owner'] = 'root'
 default['appdynamics']['machine_agent']['group'] = 'root'
 
 default['appdynamics']['machine_agent']['init_script'] = '/etc/init.d/appdynamics_machine_agent'
+default['appdynamics']['machine_agent']['pid_dir'] = '/var/run/'
 default['appdynamics']['machine_agent']['pid_file'] = '/var/run/appdynamics_machine_agent.pid'
 
 default['appdynamics']['machine_agent']['template']['cookbook'] = 'appdynamics'

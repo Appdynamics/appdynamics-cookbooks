@@ -69,18 +69,6 @@ execute 'unzip-appdynamics-machine-agent' do
   command "unzip -qqo #{agent_zip}"
 end
 
-template agent['init_script'] do
-  cookbook agent['init']['cookbook']
-  source agent['init']['source']
-  variables(
-    :install_dir => agent['install_dir'],
-    :pid_file => agent['pid_file']
-  )
-  owner agent['owner']
-  group agent['group']
-  mode '0744'
-end
-
 template "#{agent['install_dir']}/conf/controller-info.xml" do
   cookbook agent['template']['cookbook']
   source agent['template']['source']
@@ -105,6 +93,46 @@ template "#{agent['install_dir']}/conf/controller-info.xml" do
     :http_proxy_password_file => http_proxy['password_file']
   )
 end
+
+case node['init_package']
+  when 'sysv'
+
+    template agent['init_script'] do
+      cookbook agent['init']['cookbook']
+      source agent['init']['source']
+      variables(
+        :install_dir => agent['install_dir'],
+        :pid_file => agent['pid_file']
+      )
+      owner agent['owner']
+      group agent['group']
+      mode '0744'
+    end
+
+  when 'systemd'
+
+    template '/etc/systemd/system/appdynamics_machine_agent.service' do
+      source 'machine/appdynamics_machine_agent.service.erb'
+      owner 'root'
+      group 'root'
+      mode '0644'
+      cookbook agent['init']['cookbook']
+      variables(
+        :install_dir => agent['install_dir'],
+        :user => agent['owner'],
+        :pid_dir => agent['pid_dir'],
+        :pid_file => agent['pid_file']
+      )
+      notifies :run, "execute[appdynamics systemctl daemon-reload]", :immediately
+      action :create
+    end
+
+    execute "appdynamics systemctl daemon-reload" do
+      command '/bin/systemctl daemon-reload'
+      action :nothing
+    end
+end
+
 
 service 'appdynamics_machine_agent' do
   supports [:start, :stop, :restart]
