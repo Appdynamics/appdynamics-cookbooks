@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rake'
 gem 'berkshelf'
 gem 'chefspec'
-gem 'rubocop', '0.33.0'
+gem 'rubocop', '0.49.0'
 gem 'rspec'
 gem 'foodcritic'
 
